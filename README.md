@@ -10,7 +10,7 @@ The original version of Ganbatte was a standalone [Symfony](http://symfony.com/)
 Documentation
 -------------
 
-To set up this application, copy the sample configuration file in  [/config/example.config.yml](config/example.config.yml) to `/config.config.yml`.
+To set up this application, copy the sample configuration file in  [/config/example.config.yml](config/example.config.yml) to `/config/config.yml`.
 
 The meaning of each configuration variable should be blatantly obvious.
 
