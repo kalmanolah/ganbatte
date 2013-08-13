@@ -1,0 +1,34 @@
+site:
+    name:               Ganbatte!
+    description:        A simple monitoring panel for Jenkins CI jobs.
+    author:             Kalman Olah
+    keywords:           jenkins, continuous integration, ganbatte
+
+jenkins:
+    location:           https://jenkins.example.org
+    api_user:           jenkins_api_user
+    api_token:          098765432112345678900987654321
+
+dashboard:
+    refresh_interval:   10
+    progress_interval:  10
+
+monitoring:
+    groups:
+        'A group':
+            items:
+                'One Of Your Items':
+                    jobs:
+                        - jobname
+                        - jobname-of-another-job
+                        - jobname-of-yet-another-job
+                'Another Item':
+                    jobs:
+                        - job-goes-here
+                        - job-goes-here-too
+        'Another group':
+            items:
+                'Some More Items':
+                    jobs:
+                        - yet-another-jobname
+                        - yet-another-jobname-mkii

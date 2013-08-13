@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>{% if page_title is defined %}{{ page_title }}{% endif %}{% if page_title is defined and app.config.site.name is defined %} &middot; {% endif %}{% if app.config.site.name is defined %}{{ app.config.site.name }}{% endif %}</title>
+    
+    {% if app.config.site.description is defined -%}
+    <meta name="description" content="{{ app.config.site.description }}">
+    {%- endif %}
+
+    {% if app.config.site.author is defined -%}
+    <meta name="author" content="{{ app.config.site.author }}">
+    {%- endif %}
+
+    {% if app.config.site.keywords is defined -%}
+    <meta name="keywords" content="{{ app.config.site.keywords }}">
+    {% endif %}
+    
+    <meta name="viewport" content="width=device-width;initial-scale=1.0">
+   
+    {% block stylesheets -%}     
+    <link href="{{ app.request.baseUrl }}/assets/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ app.request.baseUrl }}/assets/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{{ app.request.baseUrl }}/css/layout.css" rel="stylesheet">
+    {%- endblock %}
+
+</head>
+<body>
+{% block body %}{% endblock %}
+<script>
+    app = {
+            basepath: '{{ app.request.baseUrl }}/'
+    };
+</script>
+{% block javascripts %}
+<script src="{{ app.request.baseUrl }}/assets/jquery/js/jquery.min.js"></script>
+<script src="{{ app.request.baseUrl }}/assets/jquery-cookie/js/jquery.cookie.js"></script>
+<script src="{{ app.request.baseUrl }}/assets/twitter-bootstrap/js/bootstrap.min.js"></script> 
+<script src="{{ app.request.baseUrl }}/js/main.js"></script>
+{% endblock %}
+{% block scripts %}{% endblock %}
+</body>
+</html>

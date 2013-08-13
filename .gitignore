@@ -1,0 +1,11 @@
+# composer lock
+composer.lock
+
+# composer
+composer.phar
+
+# vendors
+vendor/
+
+# configuration file
+config/config.yml

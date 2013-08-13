@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% set page_title = 'Monitoring' %}
+
+{% block body %}
+<aside class="sidebar">
+    <div class="sidebar-header">
+
+        <a class="btn btn-success autoprogress-toggle" data-toggle="tooltip" rel="tooltip" title="Automatically move to next group" data-placement="right" href="javascript:void(0)">
+            <i class="icon-pause"></i>
+        </a>
+        <a class="btn btn-info autorefresh-toggle" data-toggle="tooltip" rel="tooltip" title="Automatically refresh data" data-placement="right" href="javascript:void(0)">
+            <i class="icon-refresh"></i>
+        </a>
+        <a class="btn pull-right sidebar-toggle last" data-toggle="tooltip" rel="tooltip" title="Toggle sidebar" data-placement="right" href="javascript:void(0)">
+            <i class="icon-reorder"></i>
+        </a>
+    </div>
+    <div class="sidebar-inner">
+        <ul class="nav sidebar-groups">
+            {% if app.config.monitoring is defined and app.config.monitoring.groups is defined %}
+            {% for group_name, group in app.config.monitoring.groups %}
+            <li>
+                <a href="javascript:void(0)" data-group-id="{{ loop.index }}" class="sidebar-group group-{{loop.index}}">
+                    <span>{{ group_name }}</span><strong><i class="icon-question-sign"></i></strong>
+                </a>
+            </li>
+            {% endfor %}
+            {% endif %}
+        </ul>
+    </div>
+</aside>
+<div class="content clearfix">
+    {% if app.config.monitoring is not defined or app.config.monitoring.groups is not defined or app.config.monitoring.groups is empty %}
+    <div class="content-inner">
+        <div class="hero-unit">
+            <h1><span class="muted">Ganbatte!</span>, a Jenkins Build Monitor.</h1>
+            <br>
+            <p>Since it looks like you haven't added any monitoring groups yet, please allow me to expain just what you're looking at here.
+            <p>Ganbatte! is a pretty basic monitoring thingy for Jenkins jobs that you can display on a 40" screen located somewhere on a wall within your office. The end.
+            <p>
+                <a class="btn btn-success btn-large" href="https://github.com/kalmanolah/ganbatte">
+                    <i class="icon-github"></i> View project on Github
+                </a>
+            </p>
+        </div>
+    </div>
+    {% else %}
+    {% for group_name, group in app.config.monitoring.groups %}
+    <div data-group-id="{{ loop.index }}" class="content-inner content-group invisible group-{{ loop.index }}">
+        <div class="jobs-container-failed"></div>
+        <div class="jobs-container-neutral">
+            {% for item_name, item in group.items %}
+            <div class="content-item item-{{ loop.index }}">
+                <h2 class="content-item-header">
+                    {{ item_name }}
+                </h2>
+                <div class="item-jobs progress clearfix">
+                    {% for job in item.jobs %}
+                    <div class="item-job bar" title="{{ job }}" style="width:{{ 100 / item.jobs | length }}%;">
+                        <h3 class="item-job-header">{{ job }}</h3>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="jobs-container-disabled"></div>
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+app.page = 'index';
+app.jobs = 'apiproxy';
+app.progress_interval = {{ app.config.dashboard.progress_interval }} < 5 ? 5 : {{ app.config.dashboard.progress_interval }};
+app.refresh_interval = {{ app.config.dashboard.refresh_interval }} < 5 ? 5 : {{ app.config.dashboard.refresh_interval }};
+</script>
+{% endblock %}
