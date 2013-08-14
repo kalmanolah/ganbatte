@@ -47,18 +47,19 @@
     </div>
     {% else %}
     {% for group_name, group in app.config.monitoring.groups %}
-    <div data-group-id="{{ loop.index }}" class="content-inner content-group invisible group-{{ loop.index }}">
+    <div data-group-id="{{ loop.index }}" class="content-inner group invisible group-{{ loop.index }}">
         <div class="jobs-container-failed"></div>
         <div class="jobs-container-neutral">
             {% for item_name, item in group.items %}
-            <div class="content-item item-{{ loop.index }}">
-                <h2 class="content-item-header">
+            <div class="item item-{{ loop.index }}">
+                <h2 class="item-header">
                     {{ item_name }}
+                    <span class="item-header-meta">&nbsp;</span>
                 </h2>
-                <div class="item-jobs progress clearfix">
+                <div class="jobs progress clearfix">
                     {% for job in item.jobs %}
-                    <div class="item-job bar" title="{{ job }}" style="width:{{ 100 / item.jobs | length }}%;">
-                        <h3 class="item-job-header">{{ job }}</h3>
+                    <div class="job bar" title="{{ job }}" style="width:{{ 100 / item.jobs | length }}%;">
+                        <h3 class="job-header">{{ job }}</h3>
                     </div>
                     {% endfor %}
                 </div>

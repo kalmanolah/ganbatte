@@ -1,5 +1,33 @@
 (function($) {
 
+    // Helper function to determine browser scrollbar width
+    // All credit goes to Alexandre Gomes, http://www.alexandre-gomes.com/?p=115
+    function getScrollBarWidth () {
+      var inner = document.createElement('p');
+      inner.style.width = "100%";
+      inner.style.height = "200px";
+
+      var outer = document.createElement('div');
+      outer.style.position = "absolute";
+      outer.style.top = "0px";
+      outer.style.left = "0px";
+      outer.style.visibility = "hidden";
+      outer.style.width = "200px";
+      outer.style.height = "150px";
+      outer.style.overflow = "hidden";
+      outer.appendChild (inner);
+
+      document.body.appendChild (outer);
+      var w1 = inner.offsetWidth;
+      outer.style.overflow = 'scroll';
+      var w2 = inner.offsetWidth;
+      if (w1 == w2) w2 = outer.clientWidth;
+
+      document.body.removeChild (outer);
+
+      return (w1 - w2);
+    };
+
     $(function(){
         // Determine what page we're on
         app.page = typeof app.page != 'undefined' ? app.page : 'any';
@@ -112,7 +140,7 @@
             	var container = 'disabled';
             	var move_to_top = false;
             	
-            	$elem.find('.item-job').each(function() {
+            	$elem.find('.job').each(function() {
             		var $this = $(this);
             		
             		var this_container = $this.data('container');
@@ -179,7 +207,7 @@
             			 * First, loop through all of our job containers. The container's 'title' attribute will tell us
             			 * what job we're looking for.
             			 */
-            			$('.item-job').each(function() {
+            			$('.job').each(function() {
             				var $this = $(this);
             				var title = $this.attr('title');
             				// Only do stuff if there's a title
@@ -247,8 +275,6 @@
                     $('.sidebar').addClass('shrink');
                     $('.content').addClass('expand');
                 }
-                // We need to reset our sidebar groups
-                recalculateSidebarGroupsDimensions();
             }
 
             function initSidebar() {
@@ -274,67 +300,61 @@
                 $('[rel=tooltip]').tooltip();
             }
             
-        	function recalculateSidebarGroupsDimensions() {
-            	// Set the height for the container so we can scroll
-            	var $container = $('.sidebar-groups');
-            	$container.css({
-            		height: ($(window).height() - $container.offset().top) + 'px'
-            	});
-            	
-            	// Set the scrollwidth of the container to the offsetwidth. This way, if we hide overflow
-            	// the scrollbar will be hidden
-            	var scrollbar_width = $container.data('scrollbar-width');
-            	if(typeof $container.data('scrollbar-width') == 'undefined') {
-            		scrollbar_width = $container[0].offsetWidth - $container[0].scrollWidth;
-            		if(scrollbar_width > 0) {
-            			$container.data('scrollbar-width', scrollbar_width);
-            		}else{
-            			scrollbar_width = 0;
-            		}
-            	}
-            	// Set scrollbar_width to 0 if we currently don't have a scrollbar
-            	if($container[0].offsetHeight == $container[0].scrollHeight) {
-            		scrollbar_width = 0;
-            	}
-            	$container.css({
-            		'width': $container.parent().width() + scrollbar_width + 'px'
-            	});
+        	function fixSidebarDimensions() {
+                var $sidebar_groups = $('.sidebar-groups');
+
+                function fixSidebarHeight() {
+                    // Calculate the desired height of the groups container
+                    var height = ($(window).height() - $sidebar_groups.offset().top) + 'px';
+                    // Set the height
+                    $sidebar_groups.css('height', height);
+                }
+
+                function fixSidebarWidth() {
+                    // Hide the scrollbar by settings a negative margin-right equal to the scrollbar width
+                    var scrollbar_width = '-' + getScrollBarWidth() + 'px';
+                    $sidebar_groups.css('margin-right', scrollbar_width);
+                }
+
+                $(window).resize(fixSidebarHeight);
+                fixSidebarHeight();
+
+                fixSidebarWidth();
         	}
         	
         	function switchToGroup(id) {
         		$('.sidebar-group').removeClass('active');
         		$('.sidebar-group.group-' + id) .addClass('active');
-        		var $siblings = $('.content-group.group-' + id).siblings();
+        		var $siblings = $('.group.group-' + id).siblings();
         		if($siblings.length) {
             		var first = false;
-            		$('.content-group.group-' + id).siblings().each(function() {
+            		$('.group.group-' + id).siblings().each(function() {
             			if(!first) {
             				first = true;
             				$(this).fadeOut(function() {
-            					$('.content-group.group-' + id).removeClass('invisible').fadeIn();
-            					recalculateSidebarGroupsDimensions();
+            					$('.group.group-' + id).removeClass('invisible').fadeIn();
             				});
             			}else{
             				$(this).fadeOut();
             			}
             		});
         		}
-        		$('.content-group.group-' + id).removeClass('invisible').fadeIn();
+        		$('.group.group-' + id).removeClass('invisible').fadeIn();
         	}
         	
         	function moveToNextGroup() {
         		var id = $('.sidebar-group.active').data('group-id');
-        		var $next = $('.content-group.group-' + id).next();
+        		var $next = $('.group.group-' + id).next();
         		if($next.length == 0) {
-        			$next = $('.content-group').first();
+        			$next = $('.group').first();
         		}
         		var next = $next.data('group-id');
         		switchToGroup(next);
         	}
             
             function initSidebarGroups() {
-            	$(window).resize(recalculateSidebarGroupsDimensions);
-            	
+            	fixSidebarDimensions();
+
             	// Make sure we can switch group views
             	$('.sidebar-group').click(function() {
             		if(typeof $(this).data('group-id') != 'undefined') {
@@ -346,8 +366,8 @@
             	});
             	
             	// Switch to the first group with items on page load
-            	if($('.content-group').length) {
-            		switchToGroup($('.content-group').first().data('group-id'));
+            	if($('.group').length) {
+            		switchToGroup($('.group').first().data('group-id'));
             	}
             }
 
