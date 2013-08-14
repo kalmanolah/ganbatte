@@ -30,12 +30,12 @@ monitoring:
                     jobs:
                         - initial-job
                         - { job: secondary-job, trigger: initial-job }
-                        - { job: tertiary-job, trigger: initial-job }
+                        - { job: tertiary-job, trigger: secondary-job }
                 'And so is this pipeline':
                     jobs:
                         - new-initial-job
                         - new-secondary-job
-                        - { job: tertiary-job, trigger: tertiary-job }
+                        - { job: tertiary-job, trigger: new-secondary-job }
         'Another group':
             items:
                 'Some More Items':
