@@ -26,6 +26,16 @@ monitoring:
                     jobs:
                         - job-goes-here
                         - job-goes-here-too
+                'This pipeline is pretty rad':
+                    jobs:
+                        - initial-job
+                        - { job: secondary-job, trigger: initial-job }
+                        - { job: tertiary-job, trigger: initial-job }
+                'And so is this pipeline':
+                    jobs:
+                        - new-initial-job
+                        - new-secondary-job
+                        - { job: tertiary-job, trigger: tertiary-job }
         'Another group':
             items:
                 'Some More Items':

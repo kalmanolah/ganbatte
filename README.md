@@ -5,6 +5,18 @@ This is a simple build monitor for Jenkins. When set up, it kind of looks like t
 
 ![Ganbatte](https://raw.github.com/kalmanolah/ganbatte/master/screenshot.png)
 
+Features:
+
+- Supports build triggers, differentiating jobs based on the job triggering them
+- Allows you to add one or multiple pages of pipeline items, with the ability to automatically rotate between pages (Can be toggled)
+- Allows you to add one or multiple pipeline items per page, each with one or multiple monitored Jenkins CI jobs
+- A fully responsive layout based on Twitter Bootstrap
+- Automatic repositioning of pipeline items with only disabled jobs to the bottom and pipeline items with failing jobs to the top, so you can immediately pick up on a failing build
+- Animations and additional information for builds in progress
+- Automatic refreshing of data at a configurable interval (Can be toggled)
+- Reuse jobs on multiple pages and in multiple pipeline items without causing unnecessary strain on your Jenkins CI server
+- It just looks nice
+
 The original version of Ganbatte was a standalone [Symfony](http://symfony.com/) project, but has been discontinued in favor of using the [Silex Microframework](http://silex.sensiolabs.org/).
 
 Documentation
@@ -33,3 +45,19 @@ Credits
 -------
 
 A bunch of third party resources were used in the creation of this application. All credit goes to their original creators.
+
+Changelog
+---------
+
+See [CHANGELOG](CHANGELOG) for a more up-to-date version of the changelog.
+
+v0.2
+
+- Add support for build triggers, allowing you to re-use the same job and differentiate them based on the job that triggers them. For more information, see `config/example.config.yml`
+- Show information about the currently running build, such as cause/instigator and build number
+- Display information about the last successful build, such as build time and build number
+- Start keeping a changelog ¯\\_(ツ)_/¯
+
+v0.1
+
+- Port old version of Ganbatte, use the Silex microframework instead of the full Symfony2 framework

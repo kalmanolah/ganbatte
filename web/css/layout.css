@@ -73,7 +73,7 @@ a {
 	top: 0;
 	left: 0;
 	right: 0;
-  padding: 20px;
+  padding: 20px 20px 0;
 }
 
 /** -- CONTENT GROUPS */
@@ -100,14 +100,41 @@ a {
 .jobs {
 	height: 150px;
 }
-.job {
+.job.bar {
 	overflow: hidden;
+  /*text-align: left;*/
+  padding: 10px;
+  position: relative;
 }
-.job.animated {
-	background-repeat: repeat!important;
+.job-name,
+.job-currentbuild-info {
+  margin: 0;
 }
-.job-header {
-	margin: 20px;
+.job-lastbuild-info {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  left: 10px;
+}
+.job-lastbuild-time {
+  float: left;
+}
+.job-lastbuild-number {
+  float: right;
+}
+.job-currentbuild-info {
+  display: none;
+}
+.job-currentbuild-info > span {
+  font-size: 1.5em;
+  line-height: 1.2em;
+}
+
+.tag {
+  display: inline-block;
+  background-color: rgba(0,0,0,0.25);
+  padding: 0 4px;
+  border-radius: 3px;
 }
 
 /* ANIMATED ITEM JOBS */
@@ -128,6 +155,8 @@ a {
 	  -moz-background-size: 40px 40px;
 	  -o-background-size: 40px 40px;
 	  background-size: 40px 40px;
+
+    background-repeat: repeat!important;
 }
 .job.animated.bar-danger {
   background-color: #ee5f5b;
@@ -196,89 +225,29 @@ a {
     margin-left: 55px;
 }
 
-/** TEXT EFFECTS (?) */
 
-.blink {
-    -webkit-animation: blink 2s linear infinite;
-    -moz-animation: blink 2s linear infinite;
-    -ms-animation: blink 2s linear infinite;
-    -o-animation: blink 2s linear infinite;
-    animation: blink 2s linear infinite;
+/** TEXT TRUNCATION */
+.item-header,
+.job-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-@-webkit-keyframes blink {
-    0% { opacity: 1; }
-    10% { opacity: 0.8; }
-    20% { opacity: 0.6; }
-    30% { opacity: 0.4; }
-    40% { opacity: 0.2; }
-    50% { opacity: 0; }
-    60% { opacity: 0.2; }
-    70% { opacity: 0.4; }
-    80% { opacity: 0.6; }
-    90% { opacity: 0.8; }
-    100% { opacity: 1; }
-}
-
-@-moz-keyframes blink {
-    0% { opacity: 1; }
-    10% { opacity: 0.8; }
-    20% { opacity: 0.6; }
-    30% { opacity: 0.4; }
-    40% { opacity: 0.2; }
-    50% { opacity: 0; }
-    60% { opacity: 0.2; }
-    70% { opacity: 0.4; }
-    80% { opacity: 0.6; }
-    90% { opacity: 0.8; }
-    100% { opacity: 1; }
-}
-
-@-ms-keyframes blink {
-    0% { opacity: 1; }
-    10% { opacity: 0.8; }
-    20% { opacity: 0.6; }
-    30% { opacity: 0.4; }
-    40% { opacity: 0.2; }
-    50% { opacity: 0; }
-    60% { opacity: 0.2; }
-    70% { opacity: 0.4; }
-    80% { opacity: 0.6; }
-    90% { opacity: 0.8; }
-    100% { opacity: 1; }
-}
-
-@-o-keyframes blink {
-    0% { opacity: 1; }
-    10% { opacity: 0.8; }
-    20% { opacity: 0.6; }
-    30% { opacity: 0.4; }
-    40% { opacity: 0.2; }
-    50% { opacity: 0; }
-    60% { opacity: 0.2; }
-    70% { opacity: 0.4; }
-    80% { opacity: 0.6; }
-    90% { opacity: 0.8; }
-    100% { opacity: 1; }
-}
-
-@keyframes blink {
-    0% { opacity: 1; }
-    10% { opacity: 0.8; }
-    20% { opacity: 0.6; }
-    30% { opacity: 0.4; }
-    40% { opacity: 0.2; }
-    50% { opacity: 0; }
-    60% { opacity: 0.2; }
-    70% { opacity: 0.4; }
-    80% { opacity: 0.6; }
-    90% { opacity: 0.8; }
-    100% { opacity: 1; }
-}
-
-/** RESPONSIVE LAYOUTS */
+/** RESPONSIVE LAYOUT */
 @media (max-width: 979px) {
-   /** --SIDEBAR SHRINKING  & CONTENT EXPANDING */
+  /* Remove body padding on small screens */
+  body {
+    padding: 0;
+  }
+
+  /* Hide last build and current build info */
+  .job-lastbuild-info,
+  .job-currentbuild-info {
+    display: none;
+  }
+
+  /** --SIDEBAR SHRINKING  & CONTENT EXPANDING */
 	.sidebar {
 	    width: 55px;
 	    max-width: 55px;

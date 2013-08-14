@@ -22,6 +22,9 @@ class ApiProxy {
         foreach ($this->app['config']['monitoring']['groups'] as $group) {
             foreach ($group['items'] as $item) {
                 foreach ($item['jobs'] as $job) {
+                    if (is_array($job)) {
+                        $job = $job['job'];
+                    }
                     if (!in_array($job, $this->monitored_jobs)) {
                         $this->monitored_jobs[] = $job;
                     }
@@ -74,7 +77,7 @@ class ApiProxy {
     
     public function getJobs()
     {
-        $jobs = $this->getJenkinsResponse('api/json');
+        $jobs = $this->getJenkinsResponse('api/json/?tree=jobs[name,url,color,lastCompletedBuild[number,timestamp],lastBuild[actions[causes[*]],number,building]]');
         $jobs = json_decode($jobs);
         $jobs = $jobs->jobs;
         

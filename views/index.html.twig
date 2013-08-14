@@ -54,12 +54,26 @@
             <div class="item item-{{ loop.index }}">
                 <h2 class="item-header">
                     {{ item_name }}
-                    <span class="item-header-meta">&nbsp;</span>
                 </h2>
                 <div class="jobs progress clearfix">
                     {% for job in item.jobs %}
-                    <div class="job bar" title="{{ job }}" style="width:{{ 100 / item.jobs | length }}%;">
-                        <h3 class="job-header">{{ job }}</h3>
+                    {# jobs can be defined as arrays or as strings #}
+                    {% set is_array = (job.job is defined) %}
+                    {# For jobs with a specific trigger, we need to add data-trigger #}
+                    {% if is_array %}
+                    <div class="job bar" data-job="{{ job.job }}" data-trigger="{{ job.trigger }}" style="width:{{ 100 / item.jobs | length }}%;">
+                    {% else %}
+                    <div class="job bar" data-job="{{ job }}" style="width:{{ 100 / item.jobs | length }}%;">
+                    {% endif %}
+                        <h3 class="job-name">{% if is_array %}{{ job.job }}{% else %}{{ job }}{% endif %}</h3>
+                        <div class="job-currentbuild-info">
+                            <span class="job-currentbuild-meta label label-warning"></span>
+                            <span class="job-currentbuild-cause label label-inverse"></span>
+                        </div>
+                        <div class="job-lastbuild-info">
+                            <span class="job-lastbuild-time tag"></span>
+                            <span class="job-lastbuild-number tag"></span>
+                        </div>
                     </div>
                     {% endfor %}
                 </div>

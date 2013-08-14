@@ -209,19 +209,21 @@
             			 */
             			$('.job').each(function() {
             				var $this = $(this);
-            				var title = $this.attr('title');
-            				// Only do stuff if there's a title
-            				if(typeof title != 'undefined' && title.length > 0) {
+            				var job = $this.data('job');
+                            var trigger = $this.data('trigger');
+
+            				// Only do stuff if there's a job to do stuff for
+            				if(typeof job != 'undefined' && job.length > 0) {
             					// First, remove all classes that indicate statuses
             					$this.removeClass('animated').removeClass('success').removeClass('error').removeClass('disabled');
-            					
+            					// Set default container to disabled, to be overriden if we can match the job
     							var container = 'disabled';
     							var building = false;
             					
             					// Loop through our received data, and look for an object with a name that matches our title
             					var matched = false;
             					$.each(data, function(key, val) {
-            						if(val.name == title) {
+            						if(val.name == job) {
             							matched = true;
             							
             							building = val.color.indexOf('_anime') != -1;
@@ -248,11 +250,62 @@
             								container = 'neutral';
             								break;
             							}
+
+                                        // Figure out the cause of this build
+                                        var cause = null;
+                                        for(var i = 0; i < val.lastBuild.actions.length; i++) {
+                                            if (val.lastBuild.actions[i].causes) {
+                                                cause = val.lastBuild.actions[i].causes[0];
+                                                break;
+                                            }
+                                        }
+
+                                        // If this job is running, has a trigger and the last(current) build was triggered by another job,
+                                        // then we're only really building if the current build cause is a job that matches data-trigger
+                                        if (building && typeof trigger != 'undefined' && trigger.length > 0) {
+                                            if (cause.upstreamProject && cause.upstreamProject != trigger) {
+                                                building = false;
+                                            }
+                                        }
             							
             							// If we're building, do some magic
             							if(building) {
             								$this.addClass('animated');
             							}
+
+                                        // Display info about the last completed build
+                                        if (val.lastCompletedBuild) {
+                                            // Display the last build number
+                                            $this.find('.job-lastbuild-number').html('#' + val.lastCompletedBuild.number);
+
+                                            // Display the last build time
+                                            $this.find('.job-lastbuild-time').html(BJSInstance.parse(val.lastCompletedBuild.timestamp / 1000));
+                                        }
+
+                                        // Display or hide info about a currently running build
+                                        if (building && val.lastBuild && val.lastBuild.building) {
+                                            // Display some basic info
+                                            $this.find('.job-currentbuild-meta').html('#' + val.lastBuild.number);
+
+                                            // The HTML we'll use to display the cause
+                                            var cause_html = '';
+
+                                            // Figure out the type of the cause (user, SCM or upstream build)
+                                            if (cause.upstreamBuild) {
+                                                cause_html = '<i class="icon-upload-alt"></i> Build #' + cause.upstreamBuild;
+                                            } else if (cause.userName) {
+                                                cause_html = '<i class="icon-user"></i> ' + cause.userName;
+                                            } else {
+                                                cause_html = '<i class="icon-code-fork"></i> SCM/misc';
+                                            }
+
+                                            $this.find('.job-currentbuild-cause').html(cause_html);
+
+                                            $this.find('.job-currentbuild-info').fadeIn();
+
+                                        } else {
+                                            $this.find('.job-currentbuild-info').fadeOut();
+                                        }
             						}
             					});
             					// If no matches were found within our data, this must mean something's broken or configured incorrectly.
@@ -370,6 +423,9 @@
             		switchToGroup($('.group').first().data('group-id'));
             	}
             }
+
+            // Init Beyond.JS
+            BJSInstance = new BeyondJS();
 
             // Init tooltips
             initTooltips();
