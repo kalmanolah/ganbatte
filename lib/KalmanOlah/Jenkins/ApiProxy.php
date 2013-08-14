@@ -18,7 +18,7 @@ class ApiProxy {
         $this->jenkins_api_user = $this->app['config']['jenkins']['api_user'];
         $this->jenkins_api_token = $this->app['config']['jenkins']['api_token'];
 
-        $this->monitored_jobs = [];
+        $this->monitored_jobs = array();
         foreach ($this->app['config']['monitoring']['groups'] as $group) {
             foreach ($group['items'] as $item) {
                 foreach ($item['jobs'] as $job) {
