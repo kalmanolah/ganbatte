@@ -101,7 +101,6 @@ a {
 	height: 150px;
 }
 .job.bar {
-	overflow: hidden;
   /*text-align: left;*/
   padding: 10px;
   position: relative;

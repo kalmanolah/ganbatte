@@ -65,7 +65,11 @@
                     {% else %}
                     <div class="job bar" data-job="{{ job }}" style="width:{{ 100 / item.jobs | length }}%;">
                     {% endif %}
-                        <h3 class="job-name">{% if is_array %}{{ job.job }}{% else %}{{ job }}{% endif %}</h3>
+                        {% if is_array %}
+                        <h3 class="job-name" title="{{ job.job }}" rel="tooltip" data-placement="bottom">{{ job.job }}</h3>
+                        {% else %}
+                        <h3 class="job-name" title="{{ job }}" rel="tooltip" data-placement="bottom">{{ job }}</h3>
+                        {% endif %}
                         <div class="job-currentbuild-info">
                             <span class="job-currentbuild-meta label label-warning"></span>
                             <span class="job-currentbuild-cause label label-inverse"></span>
