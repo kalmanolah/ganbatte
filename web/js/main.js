@@ -333,7 +333,7 @@
             function initSidebar() {
                 var sidebar_cookie = 'ganbatte_sidebar_state';
                 // First, check if we should start our sidebar opened
-                var sidebar_state = $.cookie(sidebar_cookie) || true;
+                var sidebar_state = $.cookie(sidebar_cookie) || false;
                 // Convert string to bool
                 sidebar_state = typeof sidebar_state == 'string' ? (sidebar_state == 'true' ? true : false) : sidebar_state;
                 // Start up the sidebar toggler
