@@ -34,14 +34,16 @@
 {% block body %}{% endblock %}
 <script>
     app = {
-            basepath: '{{ app.request.baseUrl }}/'
+        basepath: '{{ app.request.baseUrl }}/'
     };
 </script>
 {% block javascripts %}
 <script src="{{ app.request.baseUrl }}/assets/jquery/js/jquery.min.js"></script>
 <script src="{{ app.request.baseUrl }}/assets/jquery-cookie/js/jquery.cookie.js"></script>
-<script src="{{ app.request.baseUrl }}/assets/twitter-bootstrap/js/bootstrap.min.js"></script> 
+<script src="{{ app.request.baseUrl }}/assets/twitter-bootstrap/js/bootstrap.min.js"></script>
 <script src="{{ app.request.baseUrl }}/assets/beyond.js/js/beyond.min.js"></script>
+<script src="{{ app.request.baseUrl }}/assets/underscore.js/js/underscore-min.js"></script>
+<script src="{{ app.request.baseUrl }}/assets/backbone.js/js/backbone-min.js"></script>
 <script src="{{ app.request.baseUrl }}/js/main.js"></script>
 {% endblock %}
 {% block scripts %}{% endblock %}

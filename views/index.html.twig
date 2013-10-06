@@ -4,98 +4,92 @@
 
 {% block body %}
 <aside class="sidebar">
-    <div class="sidebar-header">
-
-        <a class="btn btn-success autoprogress-toggle" data-toggle="tooltip" rel="tooltip" title="Automatically move to next group" data-placement="right" href="javascript:void(0)">
-            <i class="icon-pause"></i>
-        </a>
-        <a class="btn btn-info autorefresh-toggle" data-toggle="tooltip" rel="tooltip" title="Automatically refresh data" data-placement="right" href="javascript:void(0)">
-            <i class="icon-refresh"></i>
-        </a>
-        <a class="btn pull-right sidebar-toggle last" data-toggle="tooltip" rel="tooltip" title="Toggle sidebar" data-placement="right" href="javascript:void(0)">
-            <i class="icon-reorder"></i>
-        </a>
-    </div>
+    <div class="sidebar-header"></div>
     <div class="sidebar-inner">
-        <ul class="nav sidebar-groups">
-            {% if app.config.monitoring is defined and app.config.monitoring.groups is defined %}
-            {% for group_name, group in app.config.monitoring.groups %}
-            <li>
-                <a href="javascript:void(0)" data-group-id="{{ loop.index }}" class="sidebar-group group-{{loop.index}}">
-                    <span>{{ group_name }}</span><strong><i class="icon-question-sign"></i></strong>
-                </a>
-            </li>
-            {% endfor %}
-            {% endif %}
-        </ul>
+        <ul class="nav sidebar-pages"></ul>
     </div>
 </aside>
 <div class="content clearfix">
-    {% if app.config.monitoring is not defined or app.config.monitoring.groups is not defined or app.config.monitoring.groups is empty %}
     <div class="content-inner">
-        <div class="hero-unit">
-            <h1><span class="muted">Ganbatte!</span>, a Jenkins Build Monitor.</h1>
-            <br>
+    {% if app.config.monitoring.pages is empty %}
+        <div class="jumbotron">
+            <h1><span class="text-muted">Ganbatte</span>, a Jenkins Build Monitor.</h1>
             <p>Since it looks like you haven't added any monitoring groups yet, please allow me to expain just what you're looking at here.
-            <p>Ganbatte! is a pretty basic monitoring thingy for Jenkins jobs that you can display on a 40" screen located somewhere on a wall within your office. The end.
+            <p>Ganbatte is a pretty basic monitoring thingy for Jenkins jobs that you can display on a 40" screen located somewhere on a wall within your office. The end.
             <p>
-                <a class="btn btn-success btn-large" href="https://github.com/kalmanolah/ganbatte">
+                <a class="btn btn-success btn-lg" href="https://github.com/kalmanolah/ganbatte" target="_blank">
                     <i class="icon-github"></i> View project on Github
                 </a>
             </p>
         </div>
-    </div>
-    {% else %}
-    {% for group_name, group in app.config.monitoring.groups %}
-    <div data-group-id="{{ loop.index }}" class="content-inner group invisible group-{{ loop.index }}">
-        <div class="jobs-container-failed"></div>
-        <div class="jobs-container-neutral">
-            {% for item_name, item in group.items %}
-            <div class="item item-{{ loop.index }}">
-                <h2 class="item-header">
-                    {{ item_name }}
-                </h2>
-                <div class="jobs progress clearfix">
-                    {% for job in item.jobs %}
-                    {# jobs can be defined as arrays or as strings #}
-                    {% set is_array = (job.job is defined) %}
-                    {# For jobs with a specific trigger, we need to add data-trigger #}
-                    {% if is_array %}
-                    <div class="job bar" data-job="{{ job.job }}" data-trigger="{{ job.trigger }}" style="width:{{ 100 / item.jobs | length }}%;">
-                    {% else %}
-                    <div class="job bar" data-job="{{ job }}" style="width:{{ 100 / item.jobs | length }}%;">
-                    {% endif %}
-                        {% if is_array %}
-                        <h3 class="job-name" title="{{ job.job }}" rel="tooltip" data-placement="bottom">{{ job.job }}</h3>
-                        {% else %}
-                        <h3 class="job-name" title="{{ job }}" rel="tooltip" data-placement="bottom">{{ job }}</h3>
-                        {% endif %}
-                        <div class="job-currentbuild-info">
-                            <span class="job-currentbuild-meta label label-warning"></span>
-                            <span class="job-currentbuild-cause label label-inverse"></span>
-                        </div>
-                        <div class="job-lastbuild-info">
-                            <span class="job-lastbuild-time tag"></span>
-                            <span class="job-lastbuild-number tag"></span>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        <div class="jobs-container-disabled"></div>
-    </div>
-    {% endfor %}
     {% endif %}
+    </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
+<script type="text/template" class="sidebar-header-template">
+<a class="btn btn-success progress-toggle<% if (ganbatte.get('progress')) { %> active<% } %>" title="Automatically progress to next page" href="#">
+    <i class="<% if (ganbatte.get('progress')) { %>icon-pause<% } else { %>icon-play<% } %>"></i>
+</a>
+<a class="btn btn-info refresh-toggle<% if (ganbatte.get('refresh')) { %> active<% } %>" title="Automatically refresh data" href="#">
+    <i class="<% if (ganbatte.get('refresh')) { %>icon-spinner icon-spin<% } else { %>icon-refresh<% } %>"></i>
+</a>
+<a class="btn btn-default sidebar-toggle<% if (ganbatte.get('sidebar')) { %> active<% } %>" title="Toggle sidebar" href="#">
+    <i class="icon-reorder"></i>
+</a>
+</script>
+
+<script type="text/template" class="sidebar-pages-template">
+<% _.each(ganbatte.get('pages').models, function(page, index) { %>
+    <li>
+        <a href="javascript:void(0)" data-page-id="<%= page.get('id') %>" class="clearfix sidebar-page<% if (page.get('id') == _selected_page.get('id')) { %> active<% } %>">
+            <span class="sidebar-page-name"><%= page.get('name') %></span>
+            <span class="sidebar-page-image"><img class="img-thumbnail" src="<% if (page.get('image')) { %><%= page.get('image') %><% } else { %>//placehold.it/50x50&text=:(<% } %>"></span>
+        </a>
+    </li>
+<% }) %>
+</script>
+
+<script type="text/template" class="content-inner-template">
+<% _.each(page.get('items').getOrdered(), function(item, index) { %>
+    <div class="item">
+        <h2 class="item-header"><%= item.get('name') %></h2>
+        <div class="jobs progress">
+            <% _.each(item.get('jobs'), function(job, index) { %>
+                <div class="job progress-bar <% if (job.get('building')) { %>animated <% }%>progress-bar-<%= job.get('label') %>" style="width: <%= Math.floor((100 / item.get('jobs').length) * 100) / 100 %>%">
+                    <h3 class="job-name" title="<%= job.get('name') %>"><%= job.get('name') %></h3>
+                    <% if (job.get('building') && job.get('lastBuild') && job.get('lastBuild').building) { %>
+                    <h4 class="job-currentbuild-info">
+                        <span class="label label-primary job-currentbuild-number"># <%= job.get('lastBuild').number %></span>
+                        <span class="label label-info job-currentbuild-cause">
+                        <% if (job.get('cause').upstreamBuild) { %>
+                            <i class="icon-upload-alt"></i> Build # <%= job.get('cause').upstreamBuild %>
+                        <% } else if (job.get('cause').userName) { %>
+                            <i class="icon-user"></i> <%= job.get('cause').userName %>
+                        <% } else { %>
+                            <i class="icon-code-fork"></i> SCM/misc
+                        <% } %>
+                        </span>
+                    </h4>
+                    <% } %>
+                    <% if (job.get('lastCompletedBuild')) { %>
+                    <div class="job-lastbuild-info">
+                        <span class="tag job-lastbuild-number"># <%= job.get('lastCompletedBuild').number %></span>
+                        <span class="tag job-lastbuild-time"><i class="icon-time"></i> <%= BJSInstance.parse(job.get('lastCompletedBuild').timestamp / 1000) %></span>
+                    </div>
+                    <% } %>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+<% }) %>
+</script>
+
 <script>
-app.page = 'index';
-app.jobs = 'apiproxy';
-app.progress_interval = {{ app.config.dashboard.progress_interval }} < 5 ? 5 : {{ app.config.dashboard.progress_interval }};
-app.refresh_interval = {{ app.config.dashboard.refresh_interval }} < 5 ? 5 : {{ app.config.dashboard.refresh_interval }};
+    app.data_path         = 'data';
+    app.progress_interval = {{ app.config.dashboard.progress_interval | default(15) }};
+    app.refresh_interval  = {{ app.config.dashboard.refresh_interval | default(15) }};
+    app.pages             = {{ app.config.monitoring.pages | json_encode | raw }};
 </script>
 {% endblock %}

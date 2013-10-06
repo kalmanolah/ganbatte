@@ -5,28 +5,17 @@ namespace KalmanOlah\Jenkins;
 class ApiProxy {
     private $app;
 
-    private $jenkins_location;
-    private $jenkins_api_user;
-    private $jenkins_api_token;
-
     private $monitored_jobs;
 
     public function __construct(\Silex\Application $app) {
         $this->app = $app;
 
-        $this->jenkins_location = $this->app['config']['jenkins']['location'];
-        $this->jenkins_api_user = $this->app['config']['jenkins']['api_user'];
-        $this->jenkins_api_token = $this->app['config']['jenkins']['api_token'];
-
         $this->monitored_jobs = array();
-        foreach ($this->app['config']['monitoring']['groups'] as $group) {
-            foreach ($group['items'] as $item) {
+        foreach ($this->app['config']['monitoring']['pages'] as $page) {
+            foreach ($page['items'] as $item) {
                 foreach ($item['jobs'] as $job) {
-                    if (is_array($job)) {
-                        $job = $job['job'];
-                    }
-                    if (!in_array($job, $this->monitored_jobs)) {
-                        $this->monitored_jobs[] = $job;
+                    if (!in_array($job['name'], $this->monitored_jobs)) {
+                        $this->monitored_jobs[] = $job['name'];
                     }
                 }
             }
@@ -44,7 +33,7 @@ class ApiProxy {
         $jenkins_token = $this->app['config']['jenkins']['api_token'];
         
         $jenkins_protocol = 'http';
-        $jenkins_host = $this->jenkins_location;
+        $jenkins_host = $jenkins_location;
         
         if(preg_match('/^(.*):\/\/(.*)$/', $jenkins_location, $matches)) {
             $jenkins_protocol = $matches[1];
@@ -54,8 +43,8 @@ class ApiProxy {
         $jenkins_host = rtrim($jenkins_host, '/') . '/';
         
         $jenkins_http_auth_string = '';
-        if(!empty($this->jenkins_api_user) && !empty($this->jenkins_api_token)) {
-            $jenkins_http_auth_string = $this->jenkins_api_user . ':' . $this->jenkins_api_token . '@';
+        if(!empty($jenkins_user) && !empty($jenkins_token)) {
+            $jenkins_http_auth_string = $jenkins_user . ':' . $jenkins_token . '@';
         }
         
         $jenkins_url = $jenkins_protocol . '://' . $jenkins_http_auth_string . $jenkins_host;

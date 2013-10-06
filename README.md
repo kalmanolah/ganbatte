@@ -14,17 +14,15 @@ Features:
 - Automatic repositioning of pipeline items with only disabled jobs to the bottom and pipeline items with failing jobs to the top, so you can immediately pick up on a failing build
 - Animations and additional information for builds in progress
 - Automatic refreshing of data at a configurable interval (Can be toggled)
-- Reuse jobs on multiple pages and in multiple pipeline items without causing unnecessary strain on your Jenkins CI server
-- It just looks nice
 
-The original version of Ganbatte was a standalone [Symfony](http://symfony.com/) project, but has been discontinued in favor of using the [Silex Microframework](http://silex.sensiolabs.org/).
+This application makes use of the [Silex Microframework](http://silex.sensiolabs.org/).
 
 Documentation
 -------------
 
 To set up this application, copy the sample configuration file in  [/config/example.config.yml](config/example.config.yml) to `/config/config.yml`.
 
-The meaning of each configuration variable should be blatantly obvious.
+The meaning of each configuration variable should be obvious.
 
 Deploying/setting up
 --------------------
@@ -34,7 +32,7 @@ You'll need Composer in order to actually get this project to work. Don't forget
     curl -sS https://getcomposer.org/installer | php
     php composer.phar install
 
-After you've done these things, you can visit `/web` and gaze upon the application.
+After you've done these things, you can visit `/web` and spaz out.
 
 License
 -------
@@ -49,7 +47,13 @@ A bunch of third party resources were used in the creation of this application. 
 Changelog
 ---------
 
-See [CHANGELOG](CHANGELOG) for a more up-to-date version of the changelog.
+v0.3
+
+- Completely redo javascript code: we use backbone.js and underscore.js now; I managed to make the js about 100 lines smaller this time!
+- Upgrade Twitter bootstrap 2 to Twitter bootstrap 3
+- All options that are persisted using cookies are now disabled by default until you click the corresponding button (this means progressing, refreshing and sidebar opening)
+- Add support for page images: now I can finally display some logos
+- General bugfixing / cleanup / layout and css fixes
 
 v0.2
 

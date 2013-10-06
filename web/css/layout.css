@@ -1,109 +1,182 @@
 /** BODY */
 body {
-    background: #f2f2f2;
+  background: #f9f9f9;
 }
 
-/** LINKS */
-a {
-    outline: none!important;
+/** RESPONSIVE BODY */
+@media (max-width: 979px) {
+  /* Remove body padding on small screens */
+  body {
+    padding: 0;
+  }
 }
 
 /** SIDEBAR */
 .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 500px;
-    min-height: 100%;
-    background: #fff;
-    border-right:1px solid #ddd;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 25%;
+  min-height: 100%;
+  background: #fff;
+  border-right:1px solid #ddd;
 }
 .sidebar-header {
-    padding:10px;
-    border-bottom: 1px solid #fff;
+  padding:10px;
 }
 .sidebar-inner {
-    position: relative;
-    overflow: hidden;
+  position: relative;
+  overflow: hidden;
+}
+.sidebar-pages {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.sidebar-page {
+  font-size: 30px;
+  padding: 0 6%;
+  line-height: 60px;
+  color: #676767;
+}
+.sidebar-page.active {
+  background: #eeeeee;
+}
+.sidebar-page-name {
+  width: 85%;
+  display: block;
+  float: left;
+}
+.sidebar-page-image {
+  display: block;
+  width: 15%;
+  float: right;
+}
+.sidebar-page-image img {
+  display: block;
+  height: 60px;
 }
 
-/** --SIDEBAR GROUPS */
-.sidebar-groups {
-	overflow-y: scroll;
-	overflow-x: hidden;
+/** SIDEBAR SHRINKING */
+.sidebar-shrunk .sidebar {
+  width: 75px;
+  max-width: 75px;
+  text-align: center;
+}
+.sidebar-shrunk .sidebar-header {
+  padding: 10px 0;
+}
+.sidebar-shrunk .sidebar-header a {
+  float: none;
+  margin-bottom: 5px;
+}
+.sidebar-shrunk .sidebar-header a.last {
+  margin-bottom: 0;
+}
+.sidebar-shrunk .sidebar-page-name {
+  display: none;
+}
+.sidebar-shrunk .sidebar-page-image {
+  width: 100%;
+  display: block;
+}
+.sidebar-shrunk .sidebar-page-image img {
+  height: auto;
+  width: 100%;
+}
+.sidebar-shrunk .sidebar-page {
+  text-align: center;
+  padding: 5px;
 }
 
-/** MONITORING GROUPS */
-.sidebar-group {
-	font-size: 30px;
-	padding: 3% 6%;
-	text-align: right;
-	display: block;
-	text-decoration: none!important;
-	color: #676767;
-}
-.sidebar-group.active, .sidebar-group:hover, .sidebar-group:active, .sidebar-group:focus {
-	color: #f9f9f9;
-	background-color: #676767!important;
-	transition-property: color, background-color;
-	transition-duration: 0.5s;
-}
-.sidebar-group span {
-	width: 85%;
-	display: inline-block;
-	text-align: left;
-}
-.sidebar-group strong {
-	width: 15%;
-	display: inline-block;
-}
-.sidebar-group strong i {
-	width: 1em;
-	height: 1em;
+/** RESPONSIVE SIDEBAR SHRINKING */
+@media (max-width: 979px) {
+  .sidebar {
+    width: 75px;
+    max-width: 75px;
+    text-align: center;
+  }
+  .sidebar-header {
+    padding: 10px 0;
+  }
+  .sidebar-header a {
+    float: none;
+    margin-bottom: 5px;
+  }
+  .sidebar-header a.last {
+    margin-bottom: 0;
+  }
+  .sidebar-page-name {
+    display: none;
+  }
+  .sidebar-page-image {
+    width: 100%;
+    display: block;
+  }
+  .sidebar-page-image img {
+    height: auto;
+    width: 100%;
+  }
+  .sidebar-page {
+    text-align: center;
+    padding: 5px!important;
+  }
+  .sidebar-toggle {
+    display: none;
+  }
 }
 
 /** CONTENT WRAPPER */
 .content {
-    margin-left: 500px;
+    margin-left: 25%;
     position: relative;
 }
 .content-inner {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   padding: 20px 20px 0;
 }
 
-/** -- CONTENT GROUPS */
-.group {
+/** EXPANDED CONTENT */
+.sidebar-shrunk .content {
+  margin-left: 75px;
 }
 
-/** -- CONTENT ITEMS */
+/** RESPONSIVE EXPANDED CONTENT */
+@media (max-width: 979px) {
+  .content {
+    margin-left: 75px;
+  }
+}
+
+/** ITEMS */
 .item {
-	box-shadow: 0 0 5px #ddd;
-	border-radius: 5px;
-	margin-bottom: 20px;
-	overflow: hidden;
-	max-height: 200px;
+  box-shadow: 0 0 5px #ddd;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  max-height: 200px;
 }
 .item-header {
-	border-radius: 5px 5px 0 0;
-	background: #fff;
-	margin: 0;
-	padding: 0 20px;
-	line-height: 50px;
+  border-radius: 5px 5px 0 0;
+  background: #fff;
+  margin: 0;
+  padding: 0 20px;
+  line-height: 50px;
 }
 
-/** -- GROUP ITEMS */
+/** JOBS */
 .jobs {
-	height: 150px;
+  height: 150px;
 }
-.job.bar {
+.job {
   /*text-align: left;*/
   padding: 10px;
   position: relative;
+  height: 150px;
+  float: left;
 }
 .job-name,
 .job-currentbuild-info {
@@ -121,14 +194,6 @@ a {
 .job-lastbuild-number {
   float: right;
 }
-.job-currentbuild-info {
-  display: none;
-}
-.job-currentbuild-info > span {
-  font-size: 1.5em;
-  line-height: 1.2em;
-}
-
 .tag {
   display: inline-block;
   background-color: rgba(0,0,0,0.25);
@@ -136,28 +201,20 @@ a {
   border-radius: 3px;
 }
 
-/* ANIMATED ITEM JOBS */
+/* ANIMATED JOBS */
 .job.animated {
   -webkit-animation: progress-bar-stripes 2s linear infinite;
      -moz-animation: progress-bar-stripes 2s linear infinite;
       -ms-animation: progress-bar-stripes 2s linear infinite;
        -o-animation: progress-bar-stripes 2s linear infinite;
           animation: progress-bar-stripes 2s linear infinite;
-          
-	  background-color: #149bdf;
-	  background-image: -webkit-gradient(linear,0 100%,100% 0,color-stop(.25,rgba(255,255,255,0.15)),color-stop(.25,transparent),color-stop(.5,transparent),color-stop(.5,rgba(255,255,255,0.15)),color-stop(.75,rgba(255,255,255,0.15)),color-stop(.75,transparent),to(transparent));
-	  background-image: -webkit-linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);
-	  background-image: -moz-linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);
-	  background-image: -o-linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);
-	  background-image: linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);
-	  -webkit-background-size: 40px 40px;
-	  -moz-background-size: 40px 40px;
-	  -o-background-size: 40px 40px;
-	  background-size: 40px 40px;
-
+    -webkit-background-size: 40px 40px;
+    -moz-background-size: 40px 40px;
+    -o-background-size: 40px 40px;
+    background-size: 40px 40px;
     background-repeat: repeat!important;
 }
-.job.animated.bar-danger {
+.job.animated.progress-bar-danger {
   background-color: #ee5f5b;
   background-image: -webkit-gradient(linear,0 100%,100% 0,color-stop(.25,rgba(255,255,255,0.15)),color-stop(.25,transparent),color-stop(.5,transparent),color-stop(.5,rgba(255,255,255,0.15)),color-stop(.75,rgba(255,255,255,0.15)),color-stop(.75,transparent),to(transparent));
   background-image: -webkit-linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);
@@ -165,7 +222,7 @@ a {
   background-image: -o-linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);
   background-image: linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);
 }
-.job.animated.bar-success {
+.job.animated.progress-bar-success {
   background-color: #62c462;
   background-image: -webkit-gradient(linear,0 100%,100% 0,color-stop(.25,rgba(255,255,255,0.15)),color-stop(.25,transparent),color-stop(.5,transparent),color-stop(.5,rgba(255,255,255,0.15)),color-stop(.75,rgba(255,255,255,0.15)),color-stop(.75,transparent),to(transparent));
   background-image: -webkit-linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);
@@ -173,7 +230,7 @@ a {
   background-image: -o-linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);
   background-image: linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);
 }
-.job.animated.bar-info {
+.job.animated.progress-bar-info {
   background-color: #5bc0de;
   background-image: -webkit-gradient(linear,0 100%,100% 0,color-stop(.25,rgba(255,255,255,0.15)),color-stop(.25,transparent),color-stop(.5,transparent),color-stop(.5,rgba(255,255,255,0.15)),color-stop(.75,rgba(255,255,255,0.15)),color-stop(.75,transparent),to(transparent));
   background-image: -webkit-linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);
@@ -181,7 +238,7 @@ a {
   background-image: -o-linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);
   background-image: linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);
 }
-.job.animated.bar-warning {
+.job.animated.progress-bar-warning {
   background-color: #fbb450;
   background-image: -webkit-gradient(linear,0 100%,100% 0,color-stop(.25,rgba(255,255,255,0.15)),color-stop(.25,transparent),color-stop(.5,transparent),color-stop(.5,rgba(255,255,255,0.15)),color-stop(.75,rgba(255,255,255,0.15)),color-stop(.75,transparent),to(transparent));
   background-image: -webkit-linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);
@@ -189,93 +246,24 @@ a {
   background-image: -o-linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);
   background-image: linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);
 }
-.job.disabled {
-	background: #f0f0f0!important;
-	color: #ccc;
+.job.progress-bar-disabled {
+  background: #f0f0f0!important;
+  color: #ccc;
 }
 
-/** --SIDEBAR SHRINKING  & CONTENT EXPANDING */
-.sidebar.shrink {
-    width: 55px;
-    max-width: 55px;
-    text-align: center;
+/** RESPONSIVE JOBS */
+@media (max-width: 979px) {
+  .job-lastbuild-time,
+  .job-lastbuild-number {
+    display: none;
+  }
 }
-.sidebar.shrink .sidebar-header {
-    padding: 10px 0;
-}
-.sidebar.shrink .sidebar-header a {
-    float: none;
-    margin-bottom: 5px;
-}
-.sidebar.shrink .sidebar-header a.last {
-    margin-bottom: 0;
-}
-.sidebar.shrink .sidebar-group span {
-	display: none;
-}
-.sidebar.shrink .sidebar-group {
-	text-align: center;
-	padding: 5px 0;
-}
-.sidebar.shrink .sidebar-group strong, .sidebar.shrink.sidebar-group strong i {
-	width: auto;
-}
-.content.expand {
-    margin-left: 55px;
-}
-
 
 /** TEXT TRUNCATION */
 .item-header,
-.job-name {
+.job-name,
+.sidebar-page-name {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-/** RESPONSIVE LAYOUT */
-@media (max-width: 979px) {
-  /* Remove body padding on small screens */
-  body {
-    padding: 0;
-  }
-
-  /* Hide last build and current build info */
-  .job-lastbuild-info,
-  .job-currentbuild-info {
-    display: none;
-  }
-
-  /** --SIDEBAR SHRINKING  & CONTENT EXPANDING */
-	.sidebar {
-	    width: 55px;
-	    max-width: 55px;
-	    text-align: center;
-	}
-	.sidebar .sidebar-header {
-	    padding: 10px 0;
-	}
-	.sidebar .sidebar-header a {
-	    float: none;
-	    margin-bottom: 5px;
-	}
-	.sidebar .sidebar-header a.last {
-	    margin-bottom: 0;
-	}
-	.sidebar .sidebar-group span {
-		display: none;
-	}
-	.sidebar .sidebar-group {
-		text-align: center;
-		padding: 5px 0;
-	}
-	.sidebar .sidebar-group strong, .sidebar.sidebar-group strong i {
-		width: auto;
-	}
-	.content {
-	    margin-left: 55px;
-	}
-	.sidebar-toggle {
-		display: none;
-	}
 }

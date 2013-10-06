@@ -6,39 +6,57 @@ site:
 
 jenkins:
     location:           https://jenkins.example.org
-    api_user:           jenkins_api_user
-    api_token:          098765432112345678900987654321
+    api_user:           your_user
+    api_token:          123456789987654321
 
 dashboard:
-    refresh_interval:   10
-    progress_interval:  10
+    refresh_interval:   15
+    progress_interval:  15
 
 monitoring:
-    groups:
-        'A group':
-            items:
-                'One Of Your Items':
-                    jobs:
-                        - jobname
-                        - jobname-of-another-job
-                        - jobname-of-yet-another-job
-                'Another Item':
-                    jobs:
-                        - job-goes-here
-                        - job-goes-here-too
-                'This pipeline is pretty rad':
-                    jobs:
-                        - initial-job
-                        - { job: secondary-job, trigger: initial-job }
-                        - { job: tertiary-job, trigger: secondary-job }
-                'And so is this pipeline':
-                    jobs:
-                        - new-initial-job
-                        - new-secondary-job
-                        - { job: tertiary-job, trigger: new-secondary-job }
-        'Another group':
-            items:
-                'Some More Items':
-                    jobs:
-                        - yet-another-jobname
-                        - yet-another-jobname-mkii
+    pages:
+        - name:         First example page
+          image:        //gravatar.com/avatar/2de485d68289aade402f1161228e4321?d=https%3A%2F%2Fidenticons.github.com%2F23ed573f1936af0bb8acaafe461c122c.png
+          items:
+              - name:       Puppet tree
+                jobs:
+                    - name:     puppet-tree-release
+                    - name:     puppet-tree-release-syntax
+                      trigger:  puppet-tree-release
+                    - name:     puppet-tree-release-style
+                      trigger:  puppet-tree-release-syntax
+                    - name:     puppet-tree-release-packaging
+                      trigger:  puppet-tree-release-style
+                    - name:     puppet-tree-release-pulp
+                      trigger:  puppet-tree-release-packaging
+                    - name:     deploy-package
+                      trigger:  puppet-tree-release-pulp
+              - name:       My pipeline
+                jobs:
+                    - name:     pipeline-trigger
+                    - name:     pipeline-unittests
+                      trigger:  pipeline
+                    - name:     pipeline-package
+                      trigger:  pipeline-unittests
+                    - name:     pipeline-pulp
+                      trigger:  pipeline-package
+                    - name:     deploy-package
+                      trigger:  pipeline-pulp
+        - name:         Second example page
+          items:
+              - name:       Puppet tree
+                jobs:
+                    - name:     puppet-tree-release
+                    - name:     puppet-tree-release-syntax
+                      trigger:  puppet-tree-release
+                    - name:     puppet-tree-release-style
+                      trigger:  puppet-tree-release-syntax
+                    - name:     puppet-tree-release-packaging
+                      trigger:  puppet-tree-release-style
+                    - name:     puppet-tree-release-pulp
+                      trigger:  puppet-tree-release-packaging
+                    - name:     deploy-package
+                      trigger:  puppet-tree-release-pulp
+              - name:       A single job
+                jobs:
+                    - name:     single-job-trigger

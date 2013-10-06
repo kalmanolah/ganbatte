@@ -22,9 +22,9 @@ $app->get('/', function () use ($app) {
 });
 
 /**
- * Route: /apiproxy => Jenkins API Proxy
+ * Route: /data => Jenkins API Proxy & Data feed
  */
-$app->get('/apiproxy', function () use ($app) {
+$app->get('/data', function () use ($app) {
 	$proxy = new \KalmanOlah\Jenkins\ApiProxy($app);
 	$jobs = $proxy->getJobs();
 	return $app->json($jobs);
