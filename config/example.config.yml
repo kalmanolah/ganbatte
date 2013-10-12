@@ -8,6 +8,7 @@ jenkins:
     location:           https://jenkins.example.org
     api_user:           your_user
     api_token:          123456789987654321
+    cache_timer:        10 # Cache the Jenkins response for X seconds (set to 0 to disable)
 
 dashboard:
     refresh_interval:   15

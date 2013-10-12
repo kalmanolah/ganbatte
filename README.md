@@ -47,6 +47,12 @@ A bunch of third party resources were used in the creation of this application. 
 Changelog
 ---------
 
+v0.4
+
+- Jenkins API responses can now be cached for a few seconds, using APC if it is enabled and falling back to filesystem caching if it is not
+- Compiled twig templates are now cached in `APP_ROOT/cache/twig/` (so please make sure php can create and/or write to that folder)
+- Follow the coding standards, I suppose
+
 v0.3
 
 - Completely redo javascript code: we use backbone.js and underscore.js now; I managed to make the js about 100 lines smaller this time!

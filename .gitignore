@@ -1,11 +1,12 @@
-# composer lock
-composer.lock
-
 # composer
+composer.lock
 composer.phar
 
 # vendors
 vendor/
 
-# configuration file
+# live configuration
 config/config.yml
+
+# cache
+cache/
