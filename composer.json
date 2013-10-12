@@ -2,7 +2,6 @@
     "require": {
         "silex/silex": "1.*",
         "twig/twig": ">=1.8,<2.0-dev",
-        "symfony/yaml": "2.4.*@dev",
         "deralex/yaml-config-service-provider": "1.0.*@dev",
         "chh/cache-service-provider": "1.2.*@dev"
     },
