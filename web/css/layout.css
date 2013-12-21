@@ -177,6 +177,10 @@ body {
   position: relative;
   height: 150px;
   float: left;
+  border-right: 1px solid rgba(0,0,0,0.1);
+}
+.job:last-child {
+  border-right: 0px none;
 }
 .job-name,
 .job-currentbuild-info {
