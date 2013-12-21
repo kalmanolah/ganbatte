@@ -194,12 +194,12 @@
     var PageView = Backbone.View.extend({
         el: '.content-inner',
         render: function() {
-            /*this.$el.fadeOut(function() {
+            this.$el.fadeOut(function() {
                 renderElement('.content-inner', { page: _selected_page });
                 _page_view.$el.fadeIn();
-            });*/
+            });
             // All that fading was getting annoying
-            renderElement('.content-inner', { page: _selected_page });
+            //renderElement('.content-inner', { page: _selected_page });
         }
     });
 
@@ -272,6 +272,11 @@
             this.model.toggleBool('sidebar');
         },
         clickPage: function(ev) {
+            // Switching pages manually should disable auto-progressing
+            // If we don't do this, we might be overlapping fade animations, and that's annoying as hell
+            this.model.set({ 'progress': false });
+            this.doProgress();
+
             var page_id = $(ev.currentTarget).data('page-id');
             var page = this.model.get('pages').models[page_id];
             switchToPage(page);
