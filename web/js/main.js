@@ -111,14 +111,14 @@
 
                 // Figure out the cause of this build
                 var cause = null;
-                if (job.building) {
+                //if (job.building) {
                     for(var i = 0; i < job.lastBuild.actions.length; i++) {
                         if (job.lastBuild.actions[i].causes) {
                             cause = job.lastBuild.actions[i].causes[0];
                             break;
                         }
                     }
-                }
+                //}
 
                 job.cause = cause;
 
@@ -198,8 +198,6 @@
                 renderElement('.content-inner', { page: _selected_page });
                 _page_view.$el.fadeIn();
             });
-            // All that fading was getting annoying
-            //renderElement('.content-inner', { page: _selected_page });
         }
     });
 

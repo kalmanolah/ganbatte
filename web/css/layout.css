@@ -182,12 +182,26 @@ body {
 .job:last-child {
   border-right: 0px none;
 }
+.job-name a {
+  color: inherit;
+}
 .job-name,
 .job-currentbuild-info {
   margin: 0;
 }
-.job-name a {
-  color: inherit;
+.job-currentbuild-cause.job-currentbuild-cause-has-avatar {
+  display: inline-block;
+    vertical-align: top;
+
+}
+.job-currentbuild-cause-avatar {
+  text-align: center;
+}
+.job-currentbuild-cause-avatar img {
+  border-radius: 3px;
+  margin: 5px 0;
+  width: 50px;
+  height: 50px;
 }
 .job-lastbuild-info {
   position: absolute;

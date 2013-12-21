@@ -28,6 +28,29 @@ class ApiProxy {
         } 
     }
 
+    public function getJobs()
+    {
+        $jobs = $this->getJenkinsResponse(
+            'api/json/?tree=jobs[name,url,color,lastCompletedBuild[number,timestamp],lastBuild[actions[causes[*]],number,building]]',
+            'ganbatte_jenkins_api_response_jobs.json'
+        );
+        $jobs = json_decode($jobs);
+        $jobs = $jobs->jobs;
+        
+        $response = array();
+        
+        // Filter out jobs that aren't being monitored
+        foreach($jobs as $job) {
+            if(in_array($job->name, $this->monitored_jobs)) {
+                array_push($response, $job);
+            }
+        }
+
+        $this->injectUserEmailAddresses($response);
+
+        return $response;
+    }
+
     /**
      * Reads the configuration file and produces a jenkins url that's ready to go.
      * @return string
@@ -57,13 +80,14 @@ class ApiProxy {
 
         return $jenkins_url;
     }
-    
+
     /**
      * Fetches a response from jenkins.
      * @param uri string The string that should be appended to the base jenkins url
+     * @param cache_identifier A unique identifier for this response, for use with caching
      * @return mixed
      */
-    private function getJenkinsResponse($uri)
+    private function getJenkinsResponse($uri, $cache_identifier)
     {
         $jenkins_url = $this->getJenkinsUrl();
 
@@ -71,7 +95,7 @@ class ApiProxy {
 
         // If caching is enabled, attempt to fetch a cached response
         if ($this->cache_timer) {
-            $jenkins_response = $this->cache->fetch('ganbatte_jenkins_api_response.json');
+            $jenkins_response = $this->cache->fetch($cache_identifier);
         }
 
         // No cached response was found or caching is disabled, fetch it again
@@ -80,28 +104,76 @@ class ApiProxy {
 
             // If caching is enabled, cache the response now
             if ($this->cache_timer) {
-                $this->cache->save('ganbatte_jenkins_api_response.json', $jenkins_response, $this->cache_timer);
+                $this->cache->save($cache_identifier, $jenkins_response, $this->cache_timer);
             }
         }
 
         return $jenkins_response;
     }
-    
-    public function getJobs()
+
+    private function injectUserEmailAddresses(&$jobs)
     {
-        $jobs = $this->getJenkinsResponse('api/json/?tree=jobs[name,url,color,lastCompletedBuild[number,timestamp],lastBuild[actions[causes[*]],number,building]]');
-        $jobs = json_decode($jobs);
-        $jobs = $jobs->jobs;
-        
-        $response = array();
-        
-        // Filter out jobs that aren't being monitored
-        foreach($jobs as $job) {
-            if(in_array($job->name, $this->monitored_jobs)) {
-                array_push($response, $job);
+        array_walk($jobs, function(&$job) {
+
+            // Don't inject anything if we don't even have a last build or actions
+            if (!isset($job->lastBuild, $job->lastBuild->actions)) {
+                return;
             }
+
+            // Walk through actions
+            array_walk($job->lastBuild->actions, function(&$action) {
+
+                // Don't inject anything if we don't have causes
+                if (!isset($action->causes)) {
+                    return;
+                }
+
+                // If we do have causes, walk through them
+                array_walk($action->causes, function(&$cause) {
+
+                    // If the cause doesn't contain a user id, don't do anything
+                    if (!isset($cause->userId)) {
+                        return;
+                    }
+
+                    // If the cause did contain a user id, get the email and add it
+                    $cause->userEmail = $this->getUserEmailById($cause->userId);
+
+                    // While we're at it, add a gravatar URL
+                    $cause->userGravatar = $this->getGravatarByEmail($cause->userEmail);
+
+                });
+
+            });
+
+        });
+    }
+
+    private function getUserEmailById($user_id)
+    {
+        $user_info = $this->getJenkinsResponse(
+            sprintf('user/%s/api/json/?tree=property[address]', $user_id),
+            sprintf('ganbatte_jenkins_api_response_user_%s.json', $user_id)
+        );
+        $user_info = json_decode($user_info);
+
+        $user_properties = $user_info->property;
+
+        // Loop through properties until we get an address, if possible
+        $user_address = null;
+        foreach ($user_properties as $user_property) {
+            if (!isset($user_property->address)) {
+                continue;
+            }
+
+            $user_address = $user_property->address;
         }
 
-        return $response;
+        return $user_address;
+    }
+
+    private function getGravatarByEmail($email)
+    {
+        return sprintf('//gravatar.com/avatar/%s.png?s=50&d=identicon', md5(strtolower($email)));
     }
 }

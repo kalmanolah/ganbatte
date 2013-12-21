@@ -66,10 +66,19 @@
                     <% if (job.get('building') && job.get('lastBuild') && job.get('lastBuild').building) { %>
                     <h4 class="job-currentbuild-info">
                         <span class="label label-primary job-currentbuild-number"># <%= job.get('lastBuild').number %></span>
-                        <span class="label label-info job-currentbuild-cause">
+                        <span class="label label-info job-currentbuild-cause
+                            <% if (job.get('cause').userName && job.get('cause').userGravatar) { %>
+                                job-currentbuild-cause-has-avatar
+                            <% } %>
+                        ">
                         <% if (job.get('cause').upstreamBuild) { %>
                             <i class="icon-upload-alt"></i> Build # <%= job.get('cause').upstreamBuild %>
                         <% } else if (job.get('cause').userName) { %>
+                            <% if (job.get('cause').userGravatar) { %>
+                                <div class="job-currentbuild-cause-avatar">
+                                    <img src="<%= job.get('cause').userGravatar %>">
+                                </div>
+                            <% } %>
                             <i class="icon-user"></i> <%= job.get('cause').userName %>
                         <% } else { %>
                             <i class="icon-code-fork"></i> SCM/misc
