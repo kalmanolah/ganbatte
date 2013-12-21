@@ -79,23 +79,29 @@
     // Refreshes the application data
     function refreshData() {
         $.getJSON(app.basepath + app.data_path, function(data) {
-            // Reset statuses of items
+            // Reset states of items
             $.each(_item_list.models, function(key, item) {
-                item.resetStatus();
+                item.resetState();
             });
             // Update jobs
             $.each(data, function(k, job) {
                 var jobs_orig = _job_list.where({ 'name': job.name });
 
-                var building = job.color.indexOf('_anime') != -1;
+                var building = job.lastBuild && job.lastBuild.building;
                 job.color = job.color.replace('_anime', '');
                 job.building = building;
+
+                // If job.color == aborted, we can't ever be building
+                if (job.color == 'aborted') {
+                    job.building = false;
+                }
 
                 var statuses = {
                     blue:     'success',
                     disabled: 'disabled',
                     red:      'failed',
-                    grey:     'pending'
+                    grey:     'pending',
+                    aborted:  'failed'
                 };
                 var status = statuses[job.color];
                 job.status = status;
@@ -111,14 +117,14 @@
 
                 // Figure out the cause of this build
                 var cause = null;
-                //if (job.building) {
+                if (job.building) {
                     for(var i = 0; i < job.lastBuild.actions.length; i++) {
                         if (job.lastBuild.actions[i].causes) {
                             cause = job.lastBuild.actions[i].causes[0];
                             break;
                         }
                     }
-                //}
+                }
 
                 job.cause = cause;
 
@@ -129,6 +135,7 @@
                     if (job.building && typeof job_orig.get('trigger') != 'undefined') {
                         if (job.cause.upstreamProject && job.cause.upstreamProject != job_orig.get('trigger')) {
                             job_orig.set({ building: false });
+                            job.building = false;
                         }
                     }
 
@@ -152,6 +159,11 @@
                         // If the item has no status yet, just give it this job's status
                         item.set({ status: job.status });
                     }
+
+                    // Set the building state of the item this job is a part of
+                    if (!item.get('building') && job.building) {
+                        item.set({ building: job.building });
+                    }
                 });
             });
             // Render the main page view
@@ -167,8 +179,8 @@
         }
     });
     var Item = Backbone.Model.extend({
-        resetStatus: function() {
-            this.set({ status: null });
+        resetState: function() {
+            this.set({ status: null, building: false });
         }
     });
     var Page = Backbone.Model.extend();
@@ -182,10 +194,26 @@
         // ORDER: failed > success > pending > disabled
         getOrdered: function() {
             return $.merge(
-                this.where({ status: 'failed' }),
-                this.where({ status: 'success' }),
-                this.where({ status: 'pending' }),
-                this.where({ status: 'disabled' })
+                $.merge(
+                    $.merge(
+                        $.merge(
+                            $.merge(
+                                $.merge(
+                                    $.merge(
+                                        this.where({ status: 'failed', building: true }),
+                                        this.where({ status: 'failed', building: false })
+                                    ),
+                                    this.where({ status: 'success', building: true })
+                                ),
+                                this.where({ status: 'pending', building: true })
+                            ),
+                            this.where({ status: 'disabled', building: true })
+                        ),
+                        this.where({ status: 'success', building: false })
+                    ),
+                    this.where({ status: 'pending', building: false })
+                ),
+                this.where({ status: 'disabled', building: false })
             );
         }
     });
