@@ -58,7 +58,11 @@
         <div class="jobs progress">
             <% _.each(item.get('jobs'), function(job, index) { %>
                 <div class="job progress-bar <% if (job.get('building')) { %>animated <% }%>progress-bar-<%= job.get('label') %>" style="width: <%= Math.floor((100 / item.get('jobs').length) * 100) / 100 %>%">
-                    <h3 class="job-name" title="<%= job.get('name') %>"><%= job.get('name') %></h3>
+                    <h3 class="job-name" title="<%= job.get('name') %>">
+                        <a href="<%= job.get('url') %>" target="_blank">
+                            <%= job.get('name') %>
+                        </a>
+                    </h3>
                     <% if (job.get('building') && job.get('lastBuild') && job.get('lastBuild').building) { %>
                     <h4 class="job-currentbuild-info">
                         <span class="label label-primary job-currentbuild-number"># <%= job.get('lastBuild').number %></span>

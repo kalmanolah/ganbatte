@@ -186,6 +186,9 @@ body {
 .job-currentbuild-info {
   margin: 0;
 }
+.job-name a {
+  color: inherit;
+}
 .job-lastbuild-info {
   position: absolute;
   bottom: 10px;
