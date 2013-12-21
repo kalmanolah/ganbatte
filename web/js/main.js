@@ -217,6 +217,9 @@
         },
         toggleBool: function(key) {
             var value = !this.get(key);
+            this.setBool(key, value);
+        },
+        setBool: function(key, value) {
             this.set(key, value);
             setVariable(key, value);
         }
@@ -274,7 +277,7 @@
         clickPage: function(ev) {
             // Switching pages manually should disable auto-progressing
             // If we don't do this, we might be overlapping fade animations, and that's annoying as hell
-            this.model.set({ 'progress': false });
+            this.model.setBool('progress', false);
             this.doProgress();
 
             var page_id = $(ev.currentTarget).data('page-id');
