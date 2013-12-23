@@ -113,7 +113,9 @@ class ApiProxy {
 
     private function injectUserEmailAddresses(&$jobs)
     {
-        array_walk($jobs, function(&$job) {
+        $obj = $this;
+
+        array_walk($jobs, function(&$job) use ($obj) {
 
             // Don't inject anything if we don't even have a last build or actions
             if (!isset($job->lastBuild, $job->lastBuild->actions)) {
@@ -121,7 +123,7 @@ class ApiProxy {
             }
 
             // Walk through actions
-            array_walk($job->lastBuild->actions, function(&$action) {
+            array_walk($job->lastBuild->actions, function(&$action) use ($obj) {
 
                 // Don't inject anything if we don't have causes
                 if (!isset($action->causes)) {
@@ -129,7 +131,7 @@ class ApiProxy {
                 }
 
                 // If we do have causes, walk through them
-                array_walk($action->causes, function(&$cause) {
+                array_walk($action->causes, function(&$cause) use ($obj) {
 
                     // If the cause doesn't contain a user id, don't do anything
                     if (!isset($cause->userId)) {
@@ -137,10 +139,10 @@ class ApiProxy {
                     }
 
                     // If the cause did contain a user id, get the email and add it
-                    $cause->userEmail = $this->getUserEmailById($cause->userId);
+                    $cause->userEmail = $obj->getUserEmailById($cause->userId);
 
                     // While we're at it, add a gravatar URL
-                    $cause->userGravatar = $this->getGravatarByEmail($cause->userEmail);
+                    $cause->userGravatar = $obj->getGravatarByEmail($cause->userEmail);
 
                 });
 
@@ -149,7 +151,7 @@ class ApiProxy {
         });
     }
 
-    private function getUserEmailById($user_id)
+    public function getUserEmailById($user_id)
     {
         $user_info = $this->getJenkinsResponse(
             sprintf('user/%s/api/json/?tree=property[address]', $user_id),
@@ -172,7 +174,7 @@ class ApiProxy {
         return $user_address;
     }
 
-    private function getGravatarByEmail($email)
+    public function getGravatarByEmail($email)
     {
         return sprintf('//gravatar.com/avatar/%s.png?s=50&d=identicon', md5(strtolower($email)));
     }
