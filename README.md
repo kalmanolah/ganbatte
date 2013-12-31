@@ -47,6 +47,17 @@ A bunch of third party resources were used in the creation of this application. 
 Changelog
 ---------
 
+v0.5
+
+- Actually start tagging releases
+- Allow overriding of the cookie-set initial auto-refresh/auto-progress states by setting the $_GET variable `refresh` or `progress` to 1
+- Add separator border to jobs, in order to differentiate between similar jobs more easily
+- Re-enable fade effects
+- Job titles are now clickable and linked to the jenkins job URL
+- When a build is triggered by a user, attempt to show a gravatar for their email address
+- Building items now once again take their rightful place right below failing items
+- Various bugfixes
+
 v0.4
 
 - Jenkins API responses can now be cached for a few seconds, using APC if it is enabled and falling back to filesystem caching if it is not
