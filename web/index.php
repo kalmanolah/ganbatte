@@ -43,8 +43,15 @@ if (in_array($_SERVER['REMOTE_ADDR'], array('127.0.0.1'))) {
  * Route: / => Front page
  */
 $app->get('/', function() use ($app) {
+    // Allow adding progress=1 or refresh=1 to the URI to override the cookie-based
+    // auto-progress or auto-refresh setting on page load
+    $progress_override = array_key_exists('progress', $_GET) ? !! $_GET['progress'] : false;
+    $refresh_override  = array_key_exists('refresh', $_GET) ? !! $_GET['refresh'] : false;
 
-    return $app['twig']->render('index.html.twig');
+    return $app['twig']->render('index.html.twig', array(
+        'progress_override' => $progress_override,
+        'refresh_override'  => $refresh_override,
+    ));
 });
 
 /**

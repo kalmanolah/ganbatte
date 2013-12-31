@@ -234,12 +234,14 @@
 
     // Main application model, stores configuration
     var Ganbatte = Backbone.Model.extend({
-        defaults: {
-            progress:          getBoolean('progress', false),
-            progress_interval: null,
-            refresh:           getBoolean('refresh', false),
-            refresh_interval:  null,
-            sidebar:           getBoolean('sidebar', false)
+        defaults: function() {
+            return {
+                progress:          app.progress_override || getBoolean('progress', false),
+                progress_interval: null,
+                refresh:           app.refresh_override || getBoolean('refresh', false),
+                refresh_interval:  null,
+                sidebar:           getBoolean('sidebar', false)
+            };
         },
         toggleBool: function(key) {
             var value = !this.get(key);
