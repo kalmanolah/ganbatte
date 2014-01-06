@@ -47,6 +47,10 @@ A bunch of third party resources were used in the creation of this application. 
 Changelog
 ---------
 
+v0.5.1
+
+- Remove fadeout/fadein effect when data refreshes.. yet again
+
 v0.5
 
 - Actually start tagging releases

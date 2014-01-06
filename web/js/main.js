@@ -167,7 +167,7 @@
                 });
             });
             // Render the main page view
-            _page_view.render();
+            _page_view.renderBase();
         });
     }
 
@@ -223,9 +223,12 @@
         el: '.content-inner',
         render: function() {
             this.$el.fadeOut(function() {
-                renderElement('.content-inner', { page: _selected_page });
+                _page_view.renderBase();
                 _page_view.$el.fadeIn();
             });
+        },
+        renderBase: function() {
+            renderElement('.content-inner', { page: _selected_page });
         }
     });
 
@@ -327,7 +330,7 @@
         renderSidebar: function() {
             renderElement('.sidebar-header', { ganbatte: this.model });
             renderElement('.sidebar-pages', { ganbatte: this.model });
-            
+
             if (this.model.get('sidebar')) {
                 this.$el.removeClass('sidebar-shrunk');
             } else {
