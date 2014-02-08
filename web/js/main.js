@@ -27,11 +27,6 @@
         return _browser_scrollbar_width;
     };
 
-    // Initializes Bootstrap tooltips
-    function initTooltips() {
-        $('[rel="tooltip"]').tooltip();
-    }
-
     // Renders a template with some variables and puts the resulting html in a container
     function renderElement(identifier, variables) {
         var template = _.template($(identifier + '-template').html(), variables);
@@ -343,8 +338,6 @@
     });
 
     $(function() {
-        initTooltips();
-
         // Init Beyond.JS
         BJSInstance = new BeyondJS();
 

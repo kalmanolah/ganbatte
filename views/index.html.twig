@@ -18,7 +18,7 @@
             <p>Ganbatte is a pretty basic monitoring thingy for Jenkins jobs that you can display on a 40" screen located somewhere on a wall within your office. The end.
             <p>
                 <a class="btn btn-success btn-lg" href="https://github.com/kalmanolah/ganbatte" target="_blank">
-                    <i class="icon-github"></i> View project on Github
+                    <i class="fa fa-github"></i> View project on Github
                 </a>
             </p>
         </div>
@@ -30,13 +30,13 @@
 {% block scripts %}
 <script type="text/template" class="sidebar-header-template">
 <a class="btn btn-success progress-toggle<% if (ganbatte.get('progress')) { %> active<% } %>" title="Automatically progress to next page" href="#">
-    <i class="<% if (ganbatte.get('progress')) { %>icon-pause<% } else { %>icon-play<% } %>"></i>
+    <i class="fa fa-<%= (ganbatte.get('progress') ? 'pause' : 'play') %>"></i>
 </a>
 <a class="btn btn-info refresh-toggle<% if (ganbatte.get('refresh')) { %> active<% } %>" title="Automatically refresh data" href="#">
-    <i class="<% if (ganbatte.get('refresh')) { %>icon-spinner icon-spin<% } else { %>icon-refresh<% } %>"></i>
+    <i class="fa fa-<%= (ganbatte.get('refresh') ? 'spinner fa-spin' : 'refresh') %>"></i>
 </a>
-<a class="btn btn-default sidebar-toggle<% if (ganbatte.get('sidebar')) { %> active<% } %>" title="Toggle sidebar" href="#">
-    <i class="icon-reorder"></i>
+<a class="btn btn-default sidebar-toggle<%= (ganbatte.get('sidebar') ? ' active' : '') %>" title="Toggle sidebar" href="#">
+    <i class="fa fa-bars"></i>
 </a>
 </script>
 
@@ -72,16 +72,16 @@
                             <% } %>
                         ">
                         <% if (job.get('cause').upstreamBuild) { %>
-                            <i class="icon-upload-alt"></i> Build # <%= job.get('cause').upstreamBuild %>
+                            <i class="fa fa-upload"></i> Build # <%= job.get('cause').upstreamBuild %>
                         <% } else if (job.get('cause').userName) { %>
                             <% if (job.get('cause').userGravatar) { %>
                                 <div class="job-currentbuild-cause-avatar">
                                     <img src="<%= job.get('cause').userGravatar %>">
                                 </div>
                             <% } %>
-                            <i class="icon-user"></i> <%= job.get('cause').userName %>
+                            <i class="fa fa-user"></i> <%= job.get('cause').userName %>
                         <% } else { %>
-                            <i class="icon-code-fork"></i> SCM/misc
+                            <i class="fa fa-code-fork"></i> SCM/misc
                         <% } %>
                         </span>
                     </h4>
@@ -89,7 +89,7 @@
                     <% if (job.get('lastCompletedBuild')) { %>
                     <div class="job-lastbuild-info">
                         <span class="tag job-lastbuild-number"># <%= job.get('lastCompletedBuild').number %></span>
-                        <span class="tag job-lastbuild-time"><i class="icon-time"></i> <%= BJSInstance.parse(job.get('lastCompletedBuild').timestamp / 1000) %></span>
+                        <span class="tag job-lastbuild-time"><i class="fa fa-clock-o"></i> <%= BJSInstance.parse(job.get('lastCompletedBuild').timestamp / 1000) %></span>
                     </div>
                     <% } %>
                 </div>
