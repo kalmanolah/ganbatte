@@ -58,7 +58,7 @@
     function switchToPage(page) {
         $('.sidebar-page[data-page-id="' + page.get('id') + '"]')
             .addClass('active')
-            .parent().siblings().find('a').removeClass('active');
+            .siblings().removeClass('active');
 
         _selected_page = page;
     }

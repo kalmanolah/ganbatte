@@ -47,6 +47,17 @@ A bunch of third party resources were used in the creation of this application. 
 Changelog
 ---------
 
+v0.6.0
+
+- Remove Twitter bootstrap from assets. We were only using a few things from it anyway
+- Add a script for minifying css & js assets
+- Use minified assets in templates
+
+v0.5.2
+
+- Upgrade assets, remove twitter bootstrap js since we don't need it anyway, optimize some stuff and things
+- Fix an issue with the viewport meta tag
+
 v0.5.1
 
 - Remove fadeout/fadein effect when data refreshes.. yet again

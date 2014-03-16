@@ -23,9 +23,9 @@
     {% endif %}
 
     {% block stylesheets -%}
-    <link href="{{ app.request.baseUrl }}/assets/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{ app.request.baseUrl }}/assets/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href="{{ app.request.baseUrl }}/css/layout.css" rel="stylesheet">
+    <link href="{{ app.request.baseUrl }}/assets/normalize.css/css/min-normalize.css" rel="stylesheet">
+    <link href="{{ app.request.baseUrl }}/assets/font-awesome/css/min-font-awesome.css" rel="stylesheet">
+    <link href="{{ app.request.baseUrl }}/css/min-layout.css" rel="stylesheet">
     {%- endblock %}
 
 </head>
@@ -37,12 +37,12 @@
     };
 </script>
 {% block javascripts %}
-<script src="{{ app.request.baseUrl }}/assets/jquery/js/jquery.min.js"></script>
-<script src="{{ app.request.baseUrl }}/assets/jquery-cookie/js/jquery.cookie.min.js"></script>
-<script src="{{ app.request.baseUrl }}/assets/beyond.js/js/beyond.min.js"></script>
-<script src="{{ app.request.baseUrl }}/assets/underscore.js/js/underscore.min.js"></script>
-<script src="{{ app.request.baseUrl }}/assets/backbone.js/js/backbone.min.js"></script>
-<script src="{{ app.request.baseUrl }}/js/main.js"></script>
+<script src="{{ app.request.baseUrl }}/assets/jquery/js/min-jquery.js"></script>
+<script src="{{ app.request.baseUrl }}/assets/jquery-cookie/js/min-jquery.cookie.js"></script>
+<script src="{{ app.request.baseUrl }}/assets/beyond.js/js/min-beyond.js"></script>
+<script src="{{ app.request.baseUrl }}/assets/underscore.js/js/min-underscore.js"></script>
+<script src="{{ app.request.baseUrl }}/assets/backbone.js/js/min-backbone.js"></script>
+<script src="{{ app.request.baseUrl }}/js/min-main.js"></script>
 {% endblock %}
 {% block scripts %}{% endblock %}
 </body>
