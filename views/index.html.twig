@@ -6,7 +6,7 @@
 <aside class="sidebar">
     <div class="sidebar-header"></div>
     <div class="sidebar-inner">
-        <ul class="nav sidebar-pages"></ul>
+        <div class="nav sidebar-pages"></div>
     </div>
 </aside>
 <div class="content clearfix">
@@ -29,25 +29,23 @@
 
 {% block scripts %}
 <script type="text/template" class="sidebar-header-template">
-<a class="btn btn-success progress-toggle<% if (ganbatte.get('progress')) { %> active<% } %>" title="Automatically progress to next page" href="#">
+<a class="btn progress-toggle<% if (ganbatte.get('progress')) { %> active<% } %>" title="Automatically progress to next page" href="#">
     <i class="fa fa-<%= (ganbatte.get('progress') ? 'pause' : 'play') %>"></i>
 </a>
-<a class="btn btn-info refresh-toggle<% if (ganbatte.get('refresh')) { %> active<% } %>" title="Automatically refresh data" href="#">
+<a class="btn refresh-toggle<% if (ganbatte.get('refresh')) { %> active<% } %>" title="Automatically refresh data" href="#">
     <i class="fa fa-<%= (ganbatte.get('refresh') ? 'spinner fa-spin' : 'refresh') %>"></i>
 </a>
-<a class="btn btn-default sidebar-toggle<%= (ganbatte.get('sidebar') ? ' active' : '') %>" title="Toggle sidebar" href="#">
+<a class="btn sidebar-toggle<%= (ganbatte.get('sidebar') ? ' active' : '') %>" title="Toggle sidebar" href="#">
     <i class="fa fa-bars"></i>
 </a>
 </script>
 
 <script type="text/template" class="sidebar-pages-template">
 <% _.each(ganbatte.get('pages').models, function(page, index) { %>
-    <li>
-        <a href="javascript:void(0)" data-page-id="<%= page.get('id') %>" class="clearfix sidebar-page<% if (page.get('id') == _selected_page.get('id')) { %> active<% } %>">
-            <span class="sidebar-page-name"><%= page.get('name') %></span>
-            <span class="sidebar-page-image"><img class="img-thumbnail" src="<% if (page.get('image')) { %><%= page.get('image') %><% } else { %>//placehold.it/50x50&text=:(<% } %>"></span>
-        </a>
-    </li>
+    <a href="javascript:void(0)" data-page-id="<%= page.get('id') %>" class="clearfix sidebar-page<% if (page.get('id') == _selected_page.get('id')) { %> active<% } %>">
+        <span class="sidebar-page-name"><%= page.get('name') %></span>
+        <span class="sidebar-page-image"><img src="<% if (page.get('image')) { %><%= page.get('image') %><% } else { %>//placehold.it/50x50&text=:(<% } %>"></span>
+    </a>
 <% }) %>
 </script>
 
@@ -55,9 +53,9 @@
 <% _.each(page.get('items').getOrdered(), function(item, index) { %>
     <div class="item">
         <h2 class="item-header"><%= item.get('name') %></h2>
-        <div class="jobs progress">
+        <div class="jobs">
             <% _.each(item.get('jobs'), function(job, index) { %>
-                <div class="job progress-bar <% if (job.get('building')) { %>animated <% }%>progress-bar-<%= job.get('label') %>" style="width: <%= Math.floor((100 / item.get('jobs').length) * 100) / 100 %>%">
+                <div class="job <% if (job.get('building')) { %>animated <% }%>job-<%= job.get('label') %>" style="width: <%= Math.floor((100 / item.get('jobs').length) * 100) / 100 %>%;">
                     <h3 class="job-name" title="<%= job.get('name') %>">
                         <a href="<%= job.get('url') %>" target="_blank">
                             <%= job.get('name') %>
@@ -65,8 +63,8 @@
                     </h3>
                     <% if (job.get('building') && job.get('lastBuild') && job.get('lastBuild').building) { %>
                     <h4 class="job-currentbuild-info">
-                        <span class="label label-primary job-currentbuild-number"># <%= job.get('lastBuild').number %></span>
-                        <span class="label label-info job-currentbuild-cause
+                        <span class="tag job-currentbuild-number"># <%= job.get('lastBuild').number %></span>
+                        <span class="tag job-currentbuild-cause
                             <% if (job.get('cause').userName && job.get('cause').userGravatar) { %>
                                 job-currentbuild-cause-has-avatar
                             <% } %>
