@@ -94,6 +94,8 @@ a:hover {
   border-top: 1px solid #eee;
   border-bottom: 1px solid #ddd;
   display: block;
+  transition-property: background;
+  transition-duration: 0.5s;
 }
 
 .sidebar-page:first-child {
@@ -114,15 +116,20 @@ a:hover {
 .sidebar-page-image {
   display: block;
   width: 15%;
+  height: 60px;
   float: right;
-  padding: 5px 0;
-  text-align: center;
+  position: relative;
 }
 
 .sidebar-page-image img {
-  display: block;
-  max-height: 50px;
   max-width: 100%;
+  max-height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  position: absolute;
 }
 
 /** SIDEBAR SHRINKING */
@@ -151,12 +158,6 @@ a:hover {
 .sidebar-shrunk .sidebar-page-image {
   width: 100%;
   display: block;
-}
-
-.sidebar-shrunk .sidebar-page-image img {
-  height: auto;
-  max-height: 100%;
-  width: 100%;
 }
 
 .sidebar-shrunk .sidebar-page {
@@ -191,15 +192,8 @@ a:hover {
     display: block;
   }
 
-  .sidebar-page-image img {
-    height: auto;
-    max-height: 100%;
-    width: 100%;
-  }
-
   .sidebar-page {
     text-align: center;
-    padding: 5px!important;
   }
 
   .sidebar-toggle {

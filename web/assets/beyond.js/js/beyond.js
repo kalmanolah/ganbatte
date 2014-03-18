@@ -1,5 +1,5 @@
 /**
- * Beyond.JS v1.0.2, by Kalman Olah (http://kalmanolah.net)
+ * Beyond.JS v1.0.3, by Kalman Olah (http://kalmanolah.net)
  *
  * Beyond.JS is a simple Javascript library intended for the conversion of absolute timestamps
  * into relative timestamps. It was created as a lightweight alternative for similar libraries,
@@ -17,42 +17,42 @@
  * now       number     Timestamp representing current time; defaults to current time
  * locale    object     An object containing custom locale strings
  */
-function BeyondJS(args) {
+BeyondJS = function(args) {
     // Configuration variable container
     this.cfg = {
         "future": false,
-        "now": null,
+        "now":    null,
         "locale": {
-            s: "second",
-            S: "seconds",
-            m: "minute",
-            M: "minutes",
-            h: "hour",
-            H: "hours",
-            d: "day",
-            D: "days",
-            w: "week",
-            W: "weeks",
-            mo: "month",
-            MO: "months",
-            y: "year",
-            Y: "years",
-            "default": "just now",
-            "past": "ago",
-            "future": "from now"
+            s:         "second",
+            S:         "seconds",
+            m:         "minute",
+            M:         "minutes",
+            h:         "hour",
+            H:         "hours",
+            d:         "day",
+            D:         "days",
+            w:         "week",
+            W:         "weeks",
+            mo:        "month",
+            MO:        "months",
+            y:         "year",
+            Y:         "years",
+            'default': "just now",
+            'past':    "ago",
+            'future':  "from now"
         }
     };
 
     // Diff boundary to locale string mapping
-    this.map = {
-        31536000: 'y',
-        2678400: 'mo',
-        604800: 'w',
-        86400: 'd',
-        3600: 'h',
-        60: 'm',
-        1: 's'
-    }
+    this.map = [
+        ['31536000', 'y'],
+        ['2678400', 'mo'],
+        ['604800', 'w'],
+        ['86400', 'd'],
+        ['3600', 'h'],
+        ['60', 'm'],
+        ['1', 's']
+    ];
 
     // Overwrite the default config with any custom configuration values
     if (args) {
@@ -68,7 +68,7 @@ function BeyondJS(args) {
      * =========
      * timestamp    mixed    A timestamp to parse
      */
-    this.parse = function (timestamp) {
+    this.parse = function(timestamp) {
         // If the timestamp isn't set or is an empty string, return null
         if (timestamp == null || timestamp == "") {
             return null;
@@ -98,7 +98,7 @@ function BeyondJS(args) {
      * =========
      * timestamp    number    A unix timestamp to parse
      */
-    this.parseUnix = function (timestamp) {
+    this.parseUnix = function(timestamp) {
         // Set present time to timestamp from constructor, or present time if not set
         var now = this.cfg.now || Math.round(new Date().getTime() / 1000);
 
@@ -118,10 +118,12 @@ function BeyondJS(args) {
         // Unit locale string (second, seconds, minute, etc.)
         var end = "";
 
-        for (boundary in this.map) {
-            if (abs >= boundary) {
-                str = Math.floor(abs / boundary);
-                end = this.map[boundary];
+        for (var i = 0; i < this.map.length; i++) {
+            var boundary = this.map[i];
+
+            if (abs >= boundary[0]) {
+                str = Math.floor(abs / boundary[0]);
+                end = boundary[1];
 
                 break;
             }
