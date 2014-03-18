@@ -47,6 +47,12 @@ A bunch of third party resources were used in the creation of this application. 
 Changelog
 ---------
 
+v0.6.1
+
+- Remove useless minified (old) files
+- Add new version of Beyond.JS since the old one wasn't working in webkit-based browsers
+- Clean up the font a bit
+
 v0.6.0
 
 - Remove Twitter bootstrap from assets. We were only using a few things from it anyway
