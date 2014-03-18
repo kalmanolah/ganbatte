@@ -96,6 +96,7 @@
                     disabled: 'disabled',
                     red:      'failed',
                     grey:     'pending',
+                    yellow:   'unstable',
                     aborted:  'failed'
                 };
                 var status = statuses[job.color];
@@ -105,6 +106,7 @@
                     success:  'success',
                     disabled: 'disabled',
                     failed:   'danger',
+                    unstable: 'warning',
                     pending:  'info'
                 };
                 var label = labels[job.status];

@@ -47,6 +47,10 @@ A bunch of third party resources were used in the creation of this application. 
 Changelog
 ---------
 
+v0.6.2
+
+- Add support for unstable jobs..
+
 v0.6.1
 
 - Remove useless minified (old) files
