@@ -25,7 +25,7 @@ class ApiProxy {
                     }
                 }
             }
-        } 
+        }
     }
 
     public function getJobs()
@@ -36,9 +36,9 @@ class ApiProxy {
         );
         $jobs = json_decode($jobs);
         $jobs = $jobs->jobs;
-        
+
         $response = array();
-        
+
         // Filter out jobs that aren't being monitored
         foreach($jobs as $job) {
             if(in_array($job->name, $this->monitored_jobs)) {
@@ -46,7 +46,7 @@ class ApiProxy {
             }
         }
 
-        $this->injectUserEmailAddresses($response);
+        $this->injectUserData($response);
 
         return $response;
     }
@@ -111,7 +111,7 @@ class ApiProxy {
         return $jenkins_response;
     }
 
-    private function injectUserEmailAddresses(&$jobs)
+    private function injectUserData(&$jobs)
     {
         $obj = $this;
 
@@ -138,11 +138,13 @@ class ApiProxy {
                         return;
                     }
 
-                    // If the cause did contain a user id, get the email and add it
-                    $cause->userEmail = $obj->getUserEmailById($cause->userId);
+                    // If the cause did contain a user id, get the email address for the user
+                    $userEmail = $obj->getUserEmailById($cause->userId);
 
-                    // While we're at it, add a gravatar URL
-                    $cause->userGravatar = $obj->getGravatarByEmail($cause->userEmail);
+                    // Add a gravatar URL if we've found an email address
+                    if ($userEmail) {
+                        $cause->userGravatar = $obj->getGravatarByEmail($userEmail);
+                    }
 
                 });
 
