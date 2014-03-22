@@ -13,11 +13,11 @@
     <div class="content-inner">
     {% if app.config.monitoring.pages is empty %}
         <div class="jumbotron">
-            <h1><span class="text-muted">Ganbatte</span>, a Jenkins Build Monitor.</h1>
+            <h1><em>Ganbatte</em>, a Jenkins Build Monitor.</h1>
             <p>Since it looks like you haven't added any monitoring groups yet, please allow me to expain just what you're looking at here.
             <p>Ganbatte is a pretty basic monitoring thingy for Jenkins jobs that you can display on a 40" screen located somewhere on a wall within your office. The end.
             <p>
-                <a class="btn btn-success btn-lg" href="https://github.com/kalmanolah/ganbatte" target="_blank">
+                <a class="btn" href="https://github.com/kalmanolah/ganbatte">
                     <i class="fa fa-github"></i> View project on Github
                 </a>
             </p>
@@ -57,13 +57,13 @@
             <% _.each(item.get('jobs'), function(job, index) { %>
                 <div class="job <% if (job.get('building')) { %>animated <% }%>job-<%= job.get('label') %>" style="width: <%= Math.floor((100 / item.get('jobs').length) * 100) / 100 %>%;">
                     <h3 class="job-name" title="<%= job.get('name') %>">
-                        <a href="<%= job.get('url') %>" target="_blank">
+                        <a href="<%= job.get('url') %>">
                             <%= job.get('name') %>
                         </a>
                     </h3>
                     <% if (job.get('building') && job.get('lastBuild') && job.get('lastBuild').building) { %>
                     <h4 class="job-currentbuild-info">
-                        <span class="tag job-currentbuild-number"># <%= job.get('lastBuild').number %></span>
+                        <a href="<%= job.get('lastBuild').url %>" class="tag job-currentbuild-number"># <%= job.get('lastBuild').number %></a>
                         <span class="tag job-currentbuild-cause
                             <% if (job.get('cause').userName && job.get('cause').userGravatar) { %>
                                 job-currentbuild-cause-has-avatar
@@ -86,7 +86,7 @@
                     <% } %>
                     <% if (job.get('lastCompletedBuild')) { %>
                     <div class="job-lastbuild-info">
-                        <span class="tag job-lastbuild-number"># <%= job.get('lastCompletedBuild').number %></span>
+                        <a href="<%= job.get('lastCompletedBuild').url %>" class="tag job-lastbuild-number"># <%= job.get('lastCompletedBuild').number %></a>
                         <span class="tag job-lastbuild-time"><i class="fa fa-clock-o"></i> <%= BJSInstance.parse(job.get('lastCompletedBuild').timestamp / 1000) %></span>
                     </div>
                     <% } %>

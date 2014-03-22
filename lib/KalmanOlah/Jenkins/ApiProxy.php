@@ -31,7 +31,7 @@ class ApiProxy {
     public function getJobs()
     {
         $jobs = $this->getJenkinsResponse(
-            'api/json/?tree=jobs[name,url,color,lastCompletedBuild[number,timestamp],lastBuild[actions[causes[*]],number,building]]',
+            'api/json/?tree=jobs[name,url,color,lastCompletedBuild[number,timestamp,url],lastBuild[actions[causes[*]],number,building,url]]',
             'ganbatte_jenkins_api_response_jobs.json'
         );
         $jobs = json_decode($jobs);

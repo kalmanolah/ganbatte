@@ -41,12 +41,12 @@ a:hover {
   background-image: none;
   border: 1px solid transparent;
   white-space: nowrap;
-  width: 2.4em;
-  height: 2.4em;
-  line-height: 2.4em;
+  line-height: 32px;
+  padding: 0 12px;
   background: #556270;
   border-radius: 4px;
   color: #CDD7B6;
+  text-decoration: none!important;
 }
 
 .btn:active,
@@ -306,6 +306,7 @@ a:hover {
   background-color: rgba(0,0,0,0.2);
   padding: 0 3px;
   border-radius: 2px;
+  color: #eee;
 }
 
 @-webkit-keyframes animated-job {

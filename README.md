@@ -10,7 +10,7 @@ Features:
 - Supports build triggers, differentiating jobs based on the job triggering them
 - Allows you to add one or multiple pages of pipeline items, with the ability to automatically rotate between pages (Can be toggled)
 - Allows you to add one or multiple pipeline items per page, each with one or multiple monitored Jenkins CI jobs
-- A fully responsive layout based on Twitter Bootstrap
+- A fully responsive layout
 - Automatic repositioning of pipeline items with only disabled jobs to the bottom and pipeline items with failing jobs to the top, so you can immediately pick up on a failing build
 - Animations and additional information for builds in progress
 - Automatic refreshing of data at a configurable interval (Can be toggled)
@@ -46,6 +46,11 @@ A bunch of third party resources were used in the creation of this application. 
 
 Changelog
 ---------
+
+v0.6.3
+
+- Turn causes and build numbers into links to the related object
+- No longer expose user's email addresses; No longer try to create gravatar URLs from null email addresses
 
 v0.6.2
 
