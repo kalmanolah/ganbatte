@@ -47,6 +47,13 @@ A bunch of third party resources were used in the creation of this application. 
 Changelog
 ---------
 
+v0.6.4
+
+- Allow specifying which page should show on page load by specifying its key in
+  the pages array defined in `config/config.yml` using the `$_GET` parameter
+  `page`; an example URL would look like this:
+  `https://ganbatte.domain.com/?page=2&progress=false&refresh=true`
+
 v0.6.3
 
 - Turn causes and build numbers into links to the related object

@@ -368,7 +368,7 @@
         });
 
         _page_view = new PageView();
-        _selected_page = _page_list.models[0];
+        _selected_page = _page_list.models[app.initial_page];
 
         var ganbatte = new Ganbatte({ pages: _page_list });
         var ganbatte_view = new GanbatteView({ model: ganbatte });

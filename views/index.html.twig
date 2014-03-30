@@ -101,6 +101,7 @@
     app.data_path         = 'data';
     app.progress_override = {{ progress_override | number_format }};
     app.refresh_override  = {{ refresh_override | number_format }};
+    app.initial_page      = {{ initial_page }};
     app.progress_interval = {{ app.config.dashboard.progress_interval | default(15) }};
     app.refresh_interval  = {{ app.config.dashboard.refresh_interval | default(15) }};
     app.pages             = {{ app.config.monitoring.pages | json_encode | raw }};
