@@ -47,6 +47,10 @@ A bunch of third party resources were used in the creation of this application. 
 Changelog
 ---------
 
+v0.6.5
+
+- Replace absolute paths to assets with relative paths
+
 v0.6.4
 
 - Allow specifying which page should show on page load by specifying its key in

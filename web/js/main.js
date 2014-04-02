@@ -73,7 +73,7 @@
 
     // Refreshes the application data
     function refreshData() {
-        $.getJSON(app.basepath + app.data_path, function(data) {
+        $.getJSON(app.data_path, function(data) {
             // Reset states of items
             $.each(_item_list.models, function(key, item) {
                 item.resetState();
